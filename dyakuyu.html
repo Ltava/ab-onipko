@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Дякуємо за покупку | АБ «Євгена Оніпка»</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root { --green: #1F4E3D; --terra: #C4633F; --cream: #F7F3EE; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Manrope', sans-serif; background: var(--cream); color: #1a1a1a; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
+    .card { background: white; border-radius: 12px; padding: 56px 48px; max-width: 520px; width: 100%; text-align: center; box-shadow: 0 8px 40px rgba(31,78,61,0.12); }
+    .icon { width: 72px; height: 72px; background: var(--green); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 28px; }
+    .icon svg { width: 36px; height: 36px; stroke: white; fill: none; stroke-width: 2; }
+    h1 { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; color: var(--green); margin-bottom: 12px; }
+    p { color: #6b6560; line-height: 1.7; margin-bottom: 8px; font-size: 15px; }
+    .highlight { color: var(--terra); font-weight: 600; }
+    .actions { display: flex; gap: 12px; margin-top: 32px; flex-wrap: wrap; justify-content: center; }
+    .btn { padding: 13px 24px; border-radius: 4px; font-family: 'Manrope', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .btn-primary { background: var(--green); color: white; border: none; }
+    .btn-primary:hover { background: #163829; }
+    .btn-outline { background: transparent; color: var(--green); border: 1.5px solid var(--green); text-decoration: none; }
+    .btn-outline:hover { background: var(--green); color: white; }
+    .note { margin-top: 24px; font-size: 13px; color: #9e9993; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="icon">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <h1>Дякуємо за покупку!</h1>
+    <p>Ваш юридичний документ вже надіслано на <span class="highlight">вашу електронну пошту</span>.</p>
+    <p>Перевірте папку «Вхідні» та «Спам», якщо лист не з'явився впродовж кількох хвилин.</p>
+    <p style="margin-top:16px">Якщо у вас виникнуть питання щодо використання документа, я готовий допомогти особисто.</p>
+    <div class="actions">
+      <a href="index.html" class="btn btn-outline">← На головну</a>
+      <a href="index.html#contact" class="btn btn-primary">Запитати адвоката</a>
+    </div>
+    <p class="note">АБ «Євгена Оніпка» · ЄДРПОУ 45219345 · Полтава</p>
+  </div>
+</body>
+</html>
