@@ -352,6 +352,16 @@
       border-radius: var(--radius-lg); padding: 20px 24px; color: rgba(255,255,255,0.8); font-size: 14px; line-height: 1.7;
     }
     .contact-address strong { display: block; color: white; font-size: 15px; margin-bottom: 6px; }
+    .qr-block {
+      display: flex; align-items: center; gap: 16px;
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+      border-radius: var(--radius-lg); padding: 16px 20px; text-decoration: none;
+      transition: all 0.25s;
+    }
+    .qr-block:hover { background: rgba(255,255,255,0.12); border-color: var(--terra); }
+    .qr-img { width: 64px; height: 64px; border-radius: var(--radius); flex-shrink: 0; }
+    .qr-text { color: rgba(255,255,255,0.8); font-size: 13px; line-height: 1.6; }
+    .qr-text strong { display: block; color: white; font-size: 14px; margin-bottom: 2px; }
 
     /* FLOATING CTA */
     .floating-cta {
@@ -770,6 +780,13 @@
           <strong>Адреса офісу</strong>
           м. Полтава. Точну адресу та маршрут надсилаю після запису на консультацію.
         </div>
+        <a href="https://t.me/advokatonipko" target="_blank" rel="noopener" class="qr-block">
+          <img src="assets/telegram-qr.png" alt="QR-код Telegram @advokatonipko" class="qr-img" loading="lazy">
+          <div class="qr-text">
+            <strong>Зручніше через Telegram?</strong>
+            Відскануйте код або перейдіть за посиланням — напишіть напряму
+          </div>
+        </a>
       </div>
       <div class="contact-form-wrap">
         <div class="form-title">Надіслати запит</div>
