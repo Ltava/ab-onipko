@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Дякуємо за покупку | АБ «Євгена Оніпка»</title>
+  <title>Дякуємо | АБ «Євгена Оніпка»</title>
   <meta name="robots" content="noindex">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
@@ -11,45 +11,88 @@
     :root { --green: #1F4E3D; --green-dark: #163829; --terra: #C4633F; --cream: #F7F3EE; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Manrope', sans-serif; background: var(--cream); color: #1a1a1a; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; }
-    .card { background: white; border-radius: 16px; padding: 56px 48px; max-width: 540px; width: 100%; text-align: center; box-shadow: 0 8px 40px rgba(31,78,61,0.12); }
-    .icon { width: 72px; height: 72px; background: var(--green); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 28px; }
+    .card { background: white; border-radius: 16px; padding: 56px 48px; max-width: 560px; width: 100%; text-align: center; box-shadow: 0 8px 40px rgba(31,78,61,0.12); }
+    .icon { width: 72px; height: 72px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 28px; }
     .icon svg { width: 36px; height: 36px; stroke: white; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .icon-doc  { background: var(--green); }
+    .icon-consult { background: var(--terra); }
     h1 { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; color: var(--green); margin-bottom: 12px; font-weight: 400; }
     p { color: #6b6560; line-height: 1.7; margin-bottom: 8px; font-size: 15px; }
-    .highlight { color: var(--terra); font-weight: 600; }
-    .actions { display: flex; gap: 12px; margin-top: 32px; flex-wrap: wrap; justify-content: center; }
+    .highlight { font-weight: 600; }
+    .highlight-terra { color: var(--terra); font-weight: 600; }
+    .steps { text-align: left; background: #f7f3ee; border-radius: 10px; padding: 20px 24px; margin: 24px 0; }
+    .step { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 12px; font-size: 14px; color: #3d3d3d; }
+    .step:last-child { margin-bottom: 0; }
+    .step-num { width: 24px; height: 24px; background: var(--green); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+    .actions { display: flex; gap: 12px; margin-top: 28px; flex-wrap: wrap; justify-content: center; }
     .btn { padding: 13px 24px; border-radius: 6px; font-family: 'Manrope', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-block; }
     .btn-primary { background: var(--green); color: white; border: none; }
     .btn-primary:hover { background: var(--green-dark); }
     .btn-outline { background: transparent; color: var(--green); border: 1.5px solid var(--green); }
     .btn-outline:hover { background: var(--green); color: white; }
-    .divider { border: none; border-top: 1px solid #eee; margin: 28px 0; }
+    .divider { border: none; border-top: 1px solid #eee; margin: 24px 0; }
     .links { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
     .links a { font-size: 13px; color: #9e9993; text-decoration: none; }
     .links a:hover { color: var(--terra); }
-    .note { margin-top: 20px; font-size: 13px; color: #c5c0bb; }
+    .note { margin-top: 16px; font-size: 13px; color: #c5c0bb; }
   </style>
 </head>
 <body>
-  <div class="card">
-    <div class="icon">
-      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-    </div>
-    <h1>Дякуємо за покупку!</h1>
-    <p>Ваш юридичний документ вже надіслано на <span class="highlight">вашу електронну пошту</span>.</p>
-    <p>Перевірте папку «Вхідні» та «Спам», якщо лист не з'явився впродовж кількох хвилин.</p>
-    <p style="margin-top:16px">Якщо у вас виникнуть питання щодо використання документа або потрібна допомога у заповненні — я готовий проконсультувати особисто.</p>
-    <div class="actions">
-      <a href="index.html" class="btn btn-outline">← На головну</a>
-      <a href="index.html#contact" class="btn btn-primary">Запитати адвоката</a>
-    </div>
-    <hr class="divider">
-    <div class="links">
-      <a href="povernennya.html">Умови повернення</a>
-      <a href="oferta.html">Публічна оферта</a>
-      <a href="privacy.html">Конфіденційність</a>
-    </div>
-    <p class="note">АБ «Євгена Оніпка» · ЄДРПОУ 45219345 · м. Полтава</p>
+  <div class="card" id="cardContent">
+    <!-- Вміст підставляється JS залежно від ?type= -->
   </div>
+
+  <script>
+    const isConsult = new URLSearchParams(window.location.search).get('type') === 'konsultatsiya';
+    const card = document.getElementById('cardContent');
+
+    if (isConsult) {
+      card.innerHTML = `
+        <div class="icon icon-consult">
+          <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <h1>Оплату отримано!</h1>
+        <p>Консультацію <span class="highlight-terra">оплачено успішно</span>.</p>
+        <p>Я особисто зв'яжуся з вами найближчим часом для погодження зручного часу та формату.</p>
+        <div class="steps">
+          <div class="step"><div class="step-num">1</div><div>Очікуйте дзвінка або повідомлення на вказаний телефон чи email — зазвичай протягом кількох годин у робочий час.</div></div>
+          <div class="step"><div class="step-num">2</div><div>Ми узгодимо зручний час і формат: телефон, відеозв'язок або особиста зустріч у Полтаві.</div></div>
+          <div class="step"><div class="step-num">3</div><div>Підготуйте наявні документи по справі — це допоможе провести консультацію ефективніше.</div></div>
+        </div>
+        <div class="actions">
+          <a href="index.html" class="btn btn-outline">← На головну</a>
+          <a href="https://t.me/advokatonipko" target="_blank" class="btn btn-primary">Написати у Telegram</a>
+        </div>
+        <hr class="divider">
+        <div class="links">
+          <a href="povernennya.html">Умови повернення</a>
+          <a href="oferta.html">Публічна оферта</a>
+          <a href="privacy.html">Конфіденційність</a>
+        </div>
+        <p class="note">АБ «Євгена Оніпка» · ЄДРПОУ 45219345 · м. Полтава</p>
+      `;
+    } else {
+      card.innerHTML = `
+        <div class="icon icon-doc">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h1>Дякуємо за покупку!</h1>
+        <p>Ваш юридичний документ вже надіслано на <span class="highlight">вашу електронну пошту</span>.</p>
+        <p>Перевірте папку «Вхідні» та «Спам», якщо лист не з'явився впродовж кількох хвилин.</p>
+        <p style="margin-top:12px">Якщо виникнуть питання щодо заповнення документа — я готовий проконсультувати особисто.</p>
+        <div class="actions">
+          <a href="index.html" class="btn btn-outline">← На головну</a>
+          <a href="index.html#contact" class="btn btn-primary">Запитати адвоката</a>
+        </div>
+        <hr class="divider">
+        <div class="links">
+          <a href="povernennya.html">Умови повернення</a>
+          <a href="oferta.html">Публічна оферта</a>
+          <a href="privacy.html">Конфіденційність</a>
+        </div>
+        <p class="note">АБ «Євгена Оніпка» · ЄДРПОУ 45219345 · м. Полтава</p>
+      `;
+    }
+  </script>
 </body>
 </html>
