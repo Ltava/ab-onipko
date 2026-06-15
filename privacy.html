@@ -4,69 +4,118 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Політика конфіденційності | АБ «Євгена Оніпка»</title>
+  <meta name="robots" content="noindex">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
-    :root { --green: #1F4E3D; --terra: #C4633F; --cream: #F7F3EE; }
+    :root { --green: #1F4E3D; --green-dark: #163829; --terra: #C4633F; --cream: #F7F3EE; --cream-dark: #EDE7DF; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Manrope', sans-serif; background: var(--cream); color: #1a1a1a; }
-    nav { background: var(--green); padding: 0 5%; height: 68px; display: flex; align-items: center; justify-content: space-between; }
+    nav { background: var(--green-dark); padding: 0 5%; height: 68px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
     .nav-name { color: white; font-family: 'Cormorant Garamond', serif; font-size: 17px; }
-    nav a { color: rgba(255,255,255,0.8); font-size: 14px; }
-    .content { max-width: 800px; margin: 0 auto; padding: 64px 5%; }
-    h1 { font-family: 'Cormorant Garamond', serif; font-size: 2.4rem; color: var(--green); margin-bottom: 8px; }
-    .meta { color: #9e9993; font-size: 13px; margin-bottom: 40px; }
-    h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--green); margin: 32px 0 12px; }
+    nav a { color: rgba(255,255,255,0.8); font-size: 14px; text-decoration: none; }
+    nav a:hover { color: white; }
+    .page-header { background: linear-gradient(135deg, var(--green-dark) 0%, var(--green) 100%); padding: 48px 5% 40px; color: white; }
+    .page-header-inner { max-width: 800px; margin: 0 auto; }
+    .page-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.55); margin-bottom: 10px; }
+    .page-header h1 { font-family: 'Cormorant Garamond', serif; font-size: 2.4rem; font-weight: 400; margin-bottom: 6px; }
+    .page-header p { color: rgba(255,255,255,0.65); font-size: 14px; }
+    .content { max-width: 800px; margin: 0 auto; padding: 56px 5% 80px; }
+    h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; color: var(--green); margin: 36px 0 12px; padding-bottom: 6px; border-bottom: 2px solid var(--cream-dark); }
+    h2:first-of-type { margin-top: 0; }
     p, li { color: #3d3d3d; line-height: 1.75; font-size: 15px; margin-bottom: 10px; }
     ul { padding-left: 20px; margin-bottom: 16px; }
     li { margin-bottom: 6px; }
     strong { color: var(--green); }
+    a { color: var(--terra); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .info-box { background: white; border: 1px solid var(--cream-dark); border-radius: 10px; padding: 22px 24px; margin: 20px 0; }
+    .info-box p { margin: 0; }
+    footer { background: var(--green-dark); padding: 28px 5%; text-align: center; }
+    footer p { color: rgba(255,255,255,0.5); font-size: 13px; margin: 0; }
+    footer a { color: rgba(255,255,255,0.7); }
   </style>
 </head>
 <body>
-<nav><span class="nav-name">АБ «Євгена Оніпка»</span><a href="index.html">← На головну</a></nav>
+<nav>
+  <span class="nav-name">АБ «Євгена Оніпка»</span>
+  <a href="index.html">← На головну</a>
+</nav>
+
+<div class="page-header">
+  <div class="page-header-inner">
+    <div class="page-eyebrow">Юридичні документи</div>
+    <h1>Політика конфіденційності</h1>
+    <p>Редакція від 15 червня 2026 року</p>
+  </div>
+</div>
+
 <div class="content">
-  <h1>Політика конфіденційності</h1>
-  <p class="meta">Редакція від 01.01.2025</p>
 
   <h2>1. Хто збирає ваші дані</h2>
-  <p>Адвокатське бюро «Євгена Оніпка» (ЄДРПОУ 45219345, м. Полтава) є контролером персональних даних відповідно до Закону України «Про захист персональних даних».</p>
+  <p>Адвокатське бюро «Євгена Оніпка» (ЄДРПОУ 45219345, юридична адреса: 36014, м. Полтава, вул. Капітана Володимира Кисельова, 3/7, кв. 18; адреса для листування: 36011, м. Полтава, вул. Європейська, 18А) є контролером персональних даних відповідно до Закону України «Про захист персональних даних» від 01.06.2010 № 2297-VI.</p>
 
   <h2>2. Які дані ми збираємо</h2>
   <ul>
     <li><strong>Контактна форма:</strong> ім'я, телефон, email-адреса, опис ситуації, обраний напрямок;</li>
     <li><strong>Оплата документів:</strong> email-адреса, ім'я для отримання документа;</li>
-    <li><strong>Технічні дані:</strong> IP-адреса, тип браузера, сторінки відвідування (анонімно через Google Analytics, за наявності).</li>
+    <li><strong>Технічні дані:</strong> IP-адреса, тип браузера, сторінки відвідування (анонімно, за наявності аналітики).</li>
   </ul>
 
   <h2>3. Мета обробки даних</h2>
   <ul>
     <li>Надання відповіді на ваш запит щодо юридичних послуг;</li>
     <li>Надсилання придбаних документів на email;</li>
-    <li>Покращення якості сайту та послуг.</li>
+    <li>Покращення якості сайту та послуг;</li>
+    <li>Виконання зобов'язань за договором (публічна оферта).</li>
   </ul>
 
   <h2>4. Передача даних третім особам</h2>
-  <p>Ваші персональні дані не продаються і не передаються третім особам для маркетингових цілей. Дані можуть бути передані:</p>
+  <p>Ваші персональні дані не продаються і не передаються третім особам для маркетингових цілей. Дані можуть бути передані виключно:</p>
   <ul>
     <li>Платіжній системі LiqPay (лише email та сума для обробки платежу);</li>
-    <li>Месенджеру Telegram (для оперативного отримання повідомлень про нові запити, дані зберігаються тільки в зашифрованому чаті).</li>
+    <li>Месенджеру Telegram (для оперативного отримання повідомлень про нові запити — дані зберігаються в зашифрованому чаті та не передаються третім особам).</li>
   </ul>
 
   <h2>5. Адвокатська таємниця</h2>
-  <p>Вся інформація, яку ви повідомляєте в контексті отримання юридичної допомоги, захищена адвокатською таємницею відповідно до ст. 22 Закону України «Про адвокатуру та адвокатську діяльність» і не може бути розголошена без вашої згоди.</p>
+  <p>Уся інформація, яку ви повідомляєте в контексті отримання юридичної допомоги, захищена адвокатською таємницею відповідно до ст. 22 Закону України «Про адвокатуру та адвокатську діяльність» і не може бути розголошена без вашої згоди.</p>
 
   <h2>6. Зберігання даних</h2>
-  <p>Контактні дані зберігаються протягом часу, необхідного для обробки вашого запиту, але не більше 3 років. Після цього вони видаляються.</p>
+  <p>Контактні дані зберігаються протягом часу, необхідного для обробки вашого запиту, але не більше 3 років з дня останнього контакту. Після цього вони видаляються.</p>
 
   <h2>7. Ваші права</h2>
-  <p>Ви маєте право: отримати доступ до своїх даних, вимагати їх виправлення або видалення, відкликати згоду на обробку. Для реалізації прав зверніться: onipko@advokat.ua</p>
+  <p>Відповідно до ЗУ «Про захист персональних даних» ви маєте право:</p>
+  <ul>
+    <li>отримати доступ до своїх персональних даних;</li>
+    <li>вимагати виправлення неточних даних;</li>
+    <li>вимагати видалення даних («право на забуття»);</li>
+    <li>відкликати згоду на обробку в будь-який момент.</li>
+  </ul>
+  <p>Для реалізації прав зверніться: <a href="mailto:onipko_evgen@ukr.net">onipko_evgen@ukr.net</a> або <a href="https://t.me/advokatonipko" target="_blank">@advokatonipko</a>.</p>
 
   <h2>8. Файли cookie</h2>
-  <p>Сайт може використовувати технічні cookie для коректної роботи. Аналітичні cookie (Google Analytics) використовуються лише за наявності відповідного технічного рішення і збирають знеособлені дані.</p>
+  <p>Сайт може використовувати технічні cookie для коректної роботи. Аналітичні cookie збирають знеособлені дані та не дозволяють ідентифікувати особу.</p>
 
-  <h2>9. Контакти</h2>
-  <p>АБ «Євгена Оніпка», ЄДРПОУ 45219345, м. Полтава, Україна. Email: onipko@advokat.ua</p>
+  <h2>9. Зміни до цієї Політики</h2>
+  <p>Ми залишаємо за собою право вносити зміни до цієї Політики. Нова редакція набирає чинності з моменту публікації на сайті.</p>
+
+  <h2>10. Контакти</h2>
+  <div class="info-box">
+    <p><strong>Адвокатське бюро «Євгена Оніпка»</strong><br>
+    ЄДРПОУ: 45219345<br>
+    Юридична адреса: 36014, м. Полтава, вул. Капітана Володимира Кисельова, 3/7, кв. 18<br>
+    Адреса для листування: 36011, м. Полтава, вул. Європейська, 18А<br>
+    Email: <a href="mailto:onipko_evgen@ukr.net">onipko_evgen@ukr.net</a><br>
+    Telegram: <a href="https://t.me/advokatonipko" target="_blank">@advokatonipko</a></p>
+  </div>
+
 </div>
+
+<footer>
+  <p>© 2024–2026 АБ «Євгена Оніпка» · ЄДРПОУ 45219345 ·
+  <a href="index.html">Головна</a> ·
+  <a href="oferta.html">Публічна оферта</a> ·
+  <a href="povernennya.html">Умови повернення</a></p>
+</footer>
 </body>
 </html>
