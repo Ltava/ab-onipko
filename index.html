@@ -528,7 +528,7 @@
     <a href="#faq">FAQ</a>
     <a href="#news">Новини</a>
     <a href="poslugy.html">Практики</a>
-    <a href="#contact" class="nav-cta">Консультація</a>
+    <a href="#contact" class="nav-cta" onclick="openConsultModal(); return false;">Консультація</a>
   </div>
   <div class="burger" onclick="toggleMenu()">
     <span></span><span></span><span></span>
@@ -542,7 +542,7 @@
   <a href="#faq" onclick="toggleMenu()">FAQ</a>
   <a href="#news" onclick="toggleMenu()">Новини</a>
   <a href="poslugy.html" onclick="toggleMenu()">Практики</a>
-  <a href="#contact" onclick="toggleMenu()">Консультація</a>
+  <a href="#" onclick="toggleMenu(); openConsultModal(); return false;">Консультація</a>
 </div>
 
 <!-- HERO -->
@@ -553,7 +553,7 @@
       <h1 class="fade-in-2">Ваша справа — <em>особисто моя</em> справа</h1>
       <p class="hero-desc fade-in-3">Кожна справа ведеться мною особисто. Без помічників, без передачі третім особам. 18 років практики — тільки ваші інтереси.</p>
       <div class="hero-actions fade-in-4">
-        <a href="#contact" class="btn-primary">Записатися на консультацію →</a>
+        <a href="#" class="btn-primary" onclick="openConsultModal(); return false;">Записатися на консультацію →</a>
         <a href="poslugy.html" class="btn-outline">Мої практики</a>
       </div>
       <div class="hero-messengers fade-in-4">
@@ -706,7 +706,7 @@
           <li>Інтереси клієнта понад усе — навіть якщо це суперечить простішому шляху</li>
           <li>Чесна оцінка перспектив ще до початку роботи</li>
         </ul>
-        <a href="#contact" class="btn-primary">Записатися на консультацію →</a>
+        <a href="#" class="btn-primary" onclick="openConsultModal(); return false;">Записатися на консультацію →</a>
       </div>
     </div>
   </div>
@@ -1137,21 +1137,32 @@
     <div class="modal-price" id="modalPrice"></div>
     <div class="modal-desc" id="modalDesc"></div>
     <div class="pay-field">
-      <label for="payEmail">Email для отримання документа</label>
+      <label for="payEmail" id="payEmailLabel">Email для отримання документа</label>
       <input type="email" id="payEmail" placeholder="your@email.com" required>
     </div>
     <div class="pay-field">
       <label for="payName">Ваше ім'я</label>
       <input type="text" id="payName" placeholder="Ім'я Прізвище">
     </div>
+    <!-- Додаткові поля лише для консультації -->
+    <div id="consultExtra" style="display:none">
+      <div class="pay-field">
+        <label for="payPhone">Номер телефону <span style="color:var(--terra)">*</span></label>
+        <input type="tel" id="payPhone" placeholder="+380...">
+      </div>
+      <div class="pay-field">
+        <label for="payTopic">Коротко опишіть ситуацію</label>
+        <textarea id="payTopic" placeholder="Декілька речень про вашу справу — допоможе підготуватися до консультації..." style="width:100%;padding:12px 14px;border:1.5px solid var(--cream-dark);border-radius:var(--radius);font-family:'Manrope',sans-serif;font-size:14px;outline:none;resize:vertical;min-height:80px"></textarea>
+      </div>
+    </div>
     <div class="pay-consent">
       <label class="consent-label">
         <input type="checkbox" id="payConsent" required>
-        <span>Я ознайомлений(-на) з <a href="povernennya.html" target="_blank">Умовами оплати та повернення коштів</a> і <a href="privacy.html" target="_blank">Політикою конфіденційності</a>, надаю згоду на обробку персональних даних та підтверджую, що з моменту отримання цифрового файлу на електронну пошту я втрачаю право на відмову від договору відповідно до ч. 4 ст. 13 ЗУ «Про захист прав споживачів».</span>
+        <span id="consentText">Я ознайомлений(-на) з <a href="povernennya.html" target="_blank">Умовами оплати та повернення коштів</a> і <a href="privacy.html" target="_blank">Політикою конфіденційності</a>, надаю згоду на обробку персональних даних та підтверджую, що з моменту отримання цифрового файлу на електронну пошту я втрачаю право на відмову від договору відповідно до ч. 4 ст. 13 ЗУ «Про захист прав споживачів».</span>
       </label>
     </div>
-    <button class="btn-pay" onclick="processPayment()">Оплатити через LiqPay →</button>
-    <p class="pay-secure">🔒 Безпечна оплата · Миттєва доставка на email</p>
+    <button class="btn-pay" id="btnPay" onclick="processPayment()">Оплатити через LiqPay →</button>
+    <p class="pay-secure" id="paySecureText">🔒 Безпечна оплата · Миттєва доставка на email</p>
   </div>
 </div>
 
@@ -1162,7 +1173,7 @@
 </div>
 
 <!-- FLOATING CTA -->
-<a href="#contact" class="floating-cta" aria-label="Консультація">
+<a href="#" onclick="openConsultModal(); return false;" class="floating-cta" aria-label="Консультація">
   <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
   <span>Консультація — 1000 грн</span>
 </a>
@@ -1183,15 +1194,55 @@
 
   // Modal logic
   let currentDoc = {};
+
   function openModal(id, title, price, desc, cat, file) {
-    currentDoc = { id, title, price, desc, cat, file };
+    currentDoc = { id, title, price, desc, cat, file, type: 'doc' };
     document.getElementById('modalTitle').textContent = title;
     document.getElementById('modalCat').textContent = cat;
     document.getElementById('modalPrice').textContent = price + ' ₴';
     document.getElementById('modalDesc').textContent = desc;
+    document.getElementById('payEmailLabel').textContent = 'Email для отримання документа';
+    document.getElementById('consultExtra').style.display = 'none';
+    document.getElementById('payPhone').removeAttribute('required');
+    document.getElementById('btnPay').textContent = 'Оплатити через LiqPay →';
+    document.getElementById('paySecureText').textContent = '🔒 Безпечна оплата · Миттєва доставка на email';
+    document.getElementById('consentText').innerHTML = 'Я ознайомлений(-на) з <a href="povernennya.html" target="_blank">Умовами оплати та повернення коштів</a> і <a href="privacy.html" target="_blank">Політикою конфіденційності</a>, надаю згоду на обробку персональних даних та підтверджую, що з моменту отримання цифрового файлу на електронну пошту я втрачаю право на відмову від договору відповідно до ч. 4 ст. 13 ЗУ «Про захист прав споживачів».';
+    document.getElementById('payConsent').checked = false;
+    document.getElementById('payEmail').value = '';
+    document.getElementById('payName').value = '';
     document.getElementById('payModal').classList.add('active');
     document.body.style.overflow = 'hidden';
   }
+
+  function openConsultModal() {
+    currentDoc = {
+      id: 'konsultatsiya',
+      title: 'Юридична консультація',
+      price: 1000,
+      desc: 'Особиста консультація з адвокатом Оніпком Євгеном. Телефоном, онлайн або з виїздом у зручне для вас місце в Полтаві. Після оплати я особисто зв\'яжуся з вами для погодження часу та формату.',
+      cat: 'Консультація з адвокатом · 1 год',
+      file: '',
+      type: 'consultation'
+    };
+    document.getElementById('modalTitle').textContent = currentDoc.title;
+    document.getElementById('modalCat').textContent = currentDoc.cat;
+    document.getElementById('modalPrice').textContent = '1000 ₴';
+    document.getElementById('modalDesc').textContent = currentDoc.desc;
+    document.getElementById('payEmailLabel').textContent = 'Email для підтвердження';
+    document.getElementById('consultExtra').style.display = 'block';
+    document.getElementById('payPhone').setAttribute('required', '');
+    document.getElementById('btnPay').textContent = 'Оплатити консультацію — 1000 ₴';
+    document.getElementById('paySecureText').textContent = '🔒 Безпечна оплата · Зв\'яжусь особисто після підтвердження';
+    document.getElementById('consentText').innerHTML = 'Я ознайомлений(-на) з <a href="povernennya.html" target="_blank">Умовами оплати та повернення коштів</a> і <a href="privacy.html" target="_blank">Політикою конфіденційності</a>, надаю згоду на обробку персональних даних. Розумію, що консультація є платною послугою вартістю 1000,00 грн.';
+    document.getElementById('payConsent').checked = false;
+    document.getElementById('payEmail').value = '';
+    document.getElementById('payName').value = '';
+    document.getElementById('payPhone').value = '';
+    document.getElementById('payTopic').value = '';
+    document.getElementById('payModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
   function closeModal() {
     document.getElementById('payModal').classList.remove('active');
     document.body.style.overflow = '';
@@ -1200,15 +1251,19 @@
     if (e.target === this) closeModal();
   });
 
-  // LiqPay payment (інтеграція)
+  // LiqPay payment
   function processPayment() {
-    const email = document.getElementById('payEmail').value.trim();
-    const name = document.getElementById('payName').value.trim();
+    const email   = document.getElementById('payEmail').value.trim();
+    const name    = document.getElementById('payName').value.trim();
     const consent = document.getElementById('payConsent').checked;
+    const isConsult = currentDoc.type === 'consultation';
+    const phone   = isConsult ? document.getElementById('payPhone').value.trim() : '';
+    const topic   = isConsult ? document.getElementById('payTopic').value.trim() : '';
 
-    if (!email) { alert('Будь ласка, вкажіть email для отримання документа'); return; }
+    if (!email) { alert('Будь ласка, вкажіть email'); return; }
+    if (isConsult && !phone) { alert('Будь ласка, вкажіть номер телефону'); return; }
     if (!consent) {
-      alert('Будь ласка, підтвердіть ознайомлення з умовами оплати, повернення коштів та Політикою конфіденційності.');
+      alert('Будь ласка, підтвердіть ознайомлення з умовами та Політикою конфіденційності.');
       return;
     }
 
@@ -1216,36 +1271,34 @@
     const PRIVATE_KEY = 'a7l04PJdPUaiLBCFqHaAql81E5wGhddUzs66UwYe';
 
     const amount      = currentDoc.price;
-    const description = 'АБ Оніпка: ' + currentDoc.title;
-    const order_id    = 'doc_' + currentDoc.id + '_' + Date.now();
+    const description = 'АБ Оніпка: ' + currentDoc.title + (isConsult && phone ? ' | ' + phone : '');
+    const order_id    = (isConsult ? 'consult_' : 'doc_') + currentDoc.id + '_' + Date.now();
+    const base        = window.location.origin + window.location.pathname.replace('index.html','');
+    const result_url  = base + (isConsult ? 'dyakuyu.html?type=konsultatsiya' : 'dyakuyu.html');
+
+    // Telegram-нотифікація про оплату консультації
+    if (isConsult) {
+      const BOT_TOKEN = '8928625265:AAG3-a4YIeVuZve5a-vatHUOrUcj5oKUpC4';
+      const CHAT_ID   = '1073109260';
+      const tgText    = `💼 <b>НОВА ОПЛАТА КОНСУЛЬТАЦІЇ</b>\n👤 Ім'я: ${name || '—'}\n📞 Телефон: ${phone}\n📧 Email: ${email}\n💬 Ситуація: ${topic || '—'}\n💰 Сума: 1000 грн\n🕐 ${new Date().toLocaleString('uk-UA')}`;
+      fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+        method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ chat_id: CHAT_ID, text: tgText, parse_mode: 'HTML' })
+      }).catch(() => {});
+    }
 
     const params = JSON.stringify({
-      version:          3,
-      public_key:       PUBLIC_KEY,
-      action:           'pay',
-      amount:           amount,
-      currency:         'UAH',
-      description:      description,
-      order_id:         order_id,
-      customer_user_id: email,
-      language:         'uk',
-      result_url:       window.location.origin + window.location.pathname.replace('index.html','') + 'dyakuyu.html',
-      server_url:       ''
+      version: 3, public_key: PUBLIC_KEY, action: 'pay',
+      amount, currency: 'UAH', description, order_id,
+      customer_user_id: email, language: 'uk',
+      result_url, server_url: ''
     });
 
     const data = btoa(unescape(encodeURIComponent(params)));
 
-    // Підпис: SHA1(private_key + data + private_key), base64
     async function sha1base64(str) {
       const buf = await crypto.subtle.digest('SHA-1', new TextEncoder().encode(str));
       return btoa(String.fromCharCode(...new Uint8Array(buf)));
-    }
-
-    // Якщо приватний ключ не налаштовано — показуємо повідомлення
-    if (PRIVATE_KEY === 'YOUR_LIQPAY_PRIVATE_KEY') {
-      showToast('Для оплати зв\'яжіться з нами: +38 050 918 58 70 або Telegram');
-      closeModal();
-      return;
     }
 
     sha1base64(PRIVATE_KEY + data + PRIVATE_KEY).then(signature => {
@@ -1253,15 +1306,12 @@
       form.method = 'POST';
       form.action = 'https://www.liqpay.ua/api/3/checkout';
       form.target = '_blank';
-
-      ['data', 'signature'].forEach((name, i) => {
+      ['data', 'signature'].forEach((n, i) => {
         const inp = document.createElement('input');
-        inp.type = 'hidden';
-        inp.name = name;
+        inp.type = 'hidden'; inp.name = n;
         inp.value = i === 0 ? data : signature;
         form.appendChild(inp);
       });
-
       document.body.appendChild(form);
       form.submit();
       document.body.removeChild(form);
