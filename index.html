@@ -1212,47 +1212,61 @@
       return;
     }
 
-    // LiqPay form generation
-    // УВАГА: замініть YOUR_PUBLIC_KEY на реальний ключ LiqPay
-    const PUBLIC_KEY = 'YOUR_LIQPAY_PUBLIC_KEY';
-    const amount = currentDoc.price;
-    const description = currentDoc.title;
-    const order_id = 'doc_' + currentDoc.id + '_' + Date.now();
+    const PUBLIC_KEY  = 'i53924086051';
+    const PRIVATE_KEY = 'YOUR_LIQPAY_PRIVATE_KEY'; // ← замінити на приватний ключ з кабінету LiqPay
 
-    // Якщо ключі не налаштовані — показуємо повідомлення
-    if (PUBLIC_KEY === 'YOUR_LIQPAY_PUBLIC_KEY') {
-      showToast('Платіжна система налаштовується. Зв\'яжіться з нами для придбання.');
+    const amount      = currentDoc.price;
+    const description = 'АБ Оніпка: ' + currentDoc.title;
+    const order_id    = 'doc_' + currentDoc.id + '_' + Date.now();
+
+    const params = JSON.stringify({
+      version:          3,
+      public_key:       PUBLIC_KEY,
+      action:           'pay',
+      amount:           amount,
+      currency:         'UAH',
+      description:      description,
+      order_id:         order_id,
+      customer_user_id: email,
+      language:         'uk',
+      result_url:       window.location.origin + window.location.pathname.replace('index.html','') + 'dyakuyu.html',
+      server_url:       ''
+    });
+
+    const data = btoa(unescape(encodeURIComponent(params)));
+
+    // Підпис: SHA1(private_key + data + private_key), base64
+    async function sha1base64(str) {
+      const buf = await crypto.subtle.digest('SHA-1', new TextEncoder().encode(str));
+      return btoa(String.fromCharCode(...new Uint8Array(buf)));
+    }
+
+    // Якщо приватний ключ не налаштовано — показуємо повідомлення
+    if (PRIVATE_KEY === 'YOUR_LIQPAY_PRIVATE_KEY') {
+      showToast('Для оплати зв\'яжіться з нами: +38 050 918 58 70 або Telegram');
       closeModal();
       return;
     }
 
-    const form = document.createElement('form');
-    form.method = 'POST';
-    form.action = 'https://www.liqpay.ua/api/3/checkout';
-    form.target = '_blank';
+    sha1base64(PRIVATE_KEY + data + PRIVATE_KEY).then(signature => {
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = 'https://www.liqpay.ua/api/3/checkout';
+      form.target = '_blank';
 
-    const data = btoa(JSON.stringify({
-      version: 3,
-      public_key: PUBLIC_KEY,
-      action: 'pay',
-      amount: amount,
-      currency: 'UAH',
-      description: description,
-      order_id: order_id,
-      customer_user_id: email,
-      result_url: window.location.origin + '/dyakuyu.html',
-      server_url: ''
-    }));
+      ['data', 'signature'].forEach((name, i) => {
+        const inp = document.createElement('input');
+        inp.type = 'hidden';
+        inp.name = name;
+        inp.value = i === 0 ? data : signature;
+        form.appendChild(inp);
+      });
 
-    const dataInput = document.createElement('input');
-    dataInput.type = 'hidden';
-    dataInput.name = 'data';
-    dataInput.value = data;
-    form.appendChild(dataInput);
-    document.body.appendChild(form);
-    form.submit();
-    document.body.removeChild(form);
-    closeModal();
+      document.body.appendChild(form);
+      form.submit();
+      document.body.removeChild(form);
+      closeModal();
+    });
   }
 
   // Contact form submit
