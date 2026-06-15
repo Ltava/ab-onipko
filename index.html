@@ -373,6 +373,11 @@
     }
     .btn-pay:hover { background: var(--terra-dark); transform: translateY(-1px); }
     .pay-secure { font-size: 12px; color: var(--text-muted); text-align: center; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 6px; }
+    .pay-consent { margin: 14px 0 18px; }
+    .consent-label { display: flex; gap: 10px; align-items: flex-start; cursor: pointer; }
+    .consent-label input[type="checkbox"] { margin-top: 3px; width: 16px; height: 16px; flex-shrink: 0; accent-color: var(--green); cursor: pointer; }
+    .consent-label span { font-size: 12px; color: var(--text-muted); line-height: 1.6; }
+    .consent-label a { color: var(--terra); }
 
     /* SUCCESS TOAST */
     .toast {
@@ -1076,7 +1081,7 @@
             <textarea id="fmessage" name="message" placeholder="Опишіть вашу ситуацію..."></textarea>
           </div>
           <button type="submit" class="btn-submit">Надіслати запит</button>
-          <p class="form-note">Натискаючи кнопку, ви погоджуєтеся з <a href="privacy.html" style="color:var(--terra)">Політикою конфіденційності</a></p>
+          <p class="form-note">Натискаючи кнопку, ви погоджуєтеся з <a href="privacy.html" style="color:var(--terra)">Політикою конфіденційності</a> та <a href="povernennya.html" style="color:var(--terra)">Умовами повернення</a></p>
         </form>
       </div>
     </div>
@@ -1090,6 +1095,11 @@
       <div>
         <div class="footer-brand-name">АБ «Євгена Оніпка»</div>
         <p class="footer-desc">Особисте ведення кожної справи. Адвокатське бюро у Полтаві з 2024 року. Свідоцтво адвоката № 502.</p>
+        <div style="margin-top:16px; font-size:13px; line-height:1.8; color:rgba(255,255,255,0.5)">
+          <div>ЄДРПОУ: 45219345</div>
+          <div>Адреса реєстрації: 36011, м. Полтава, вул. Європейська, 18А</div>
+          <div>Для листування: 36011, м. Полтава, вул. Європейська, 18А</div>
+        </div>
       </div>
       <div class="footer-col">
         <h4>Послуги</h4>
@@ -1106,13 +1116,14 @@
         <ul>
           <li><a href="oferta.html">Публічна оферта</a></li>
           <li><a href="privacy.html">Конфіденційність</a></li>
+          <li><a href="povernennya.html">Умови повернення</a></li>
           <li><a href="#shop">Магазин документів</a></li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2024–2025 АБ «Євгена Оніпка». ЄДРПОУ 45219345</span>
-      <span>Полтава, Україна</span>
+      <span>© 2024–2026 АБ «Євгена Оніпка». ЄДРПОУ 45219345 · м. Полтава, вул. Європейська, 18А</span>
+      <span><a href="povernennya.html" style="color:rgba(255,255,255,0.5)">Умови повернення</a></span>
     </div>
   </div>
 </footer>
@@ -1132,6 +1143,12 @@
     <div class="pay-field">
       <label for="payName">Ваше ім'я</label>
       <input type="text" id="payName" placeholder="Ім'я Прізвище">
+    </div>
+    <div class="pay-consent">
+      <label class="consent-label">
+        <input type="checkbox" id="payConsent" required>
+        <span>Я ознайомлений(-на) з <a href="povernennya.html" target="_blank">Умовами оплати та повернення коштів</a> і <a href="privacy.html" target="_blank">Політикою конфіденційності</a>, надаю згоду на обробку персональних даних та підтверджую, що з моменту отримання цифрового файлу на електронну пошту я втрачаю право на відмову від договору відповідно до ч. 4 ст. 13 ЗУ «Про захист прав споживачів».</span>
+      </label>
     </div>
     <button class="btn-pay" onclick="processPayment()">Оплатити через LiqPay →</button>
     <p class="pay-secure">🔒 Безпечна оплата · Миттєва доставка на email</p>
@@ -1187,7 +1204,13 @@
   function processPayment() {
     const email = document.getElementById('payEmail').value.trim();
     const name = document.getElementById('payName').value.trim();
+    const consent = document.getElementById('payConsent').checked;
+
     if (!email) { alert('Будь ласка, вкажіть email для отримання документа'); return; }
+    if (!consent) {
+      alert('Будь ласка, підтвердіть ознайомлення з умовами оплати, повернення коштів та Політикою конфіденційності.');
+      return;
+    }
 
     // LiqPay form generation
     // УВАГА: замініть YOUR_PUBLIC_KEY на реальний ключ LiqPay
