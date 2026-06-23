@@ -447,15 +447,14 @@
 
     /* Картка реального партнера — розширений формат */
     .partner-card.featured {
-      padding: 0;
+      padding: 0; overflow: hidden;
       grid-column: 1 / -1;
-      display: grid; grid-template-columns: 1.2fr 1fr;
-      background: white; gap: 0;
-      overflow: visible;
+      display: flex; align-items: stretch;
+      background: white; border-radius: var(--radius-lg);
     }
-    .partner-img-wrap { overflow: hidden; position: relative; min-height: 360px; }
-    .partner-img-wrap img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 18%; display: block; }
-    .partner-info { padding: 36px 40px; display: flex; flex-direction: column; justify-content: center; }
+    .partner-img-wrap { flex: 0 0 52%; overflow: hidden; min-height: 360px; }
+    .partner-img-wrap img { width: 100%; height: 100%; min-height: 360px; object-fit: cover; object-position: 50% 20%; display: block; }
+    .partner-info { flex: 1; min-width: 0; padding: 36px 40px; display: flex; flex-direction: column; justify-content: flex-start; }
     .partner-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--green); color: white; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 5px 14px; border-radius: 999px; margin-bottom: 18px; width: fit-content; }
     .partner-info h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.75rem; color: var(--green); font-weight: 500; margin-bottom: 4px; line-height: 1.25; }
     .partner-title { color: var(--terra); font-size: 13px; font-weight: 600; margin-bottom: 14px; letter-spacing: 0.02em; }
@@ -470,7 +469,7 @@
     .partner-ig { }
     .partner-ig:hover { color: #dc2743; }
     .partner-ig svg { stroke: #dc2743; }
-    @media (max-width: 768px) { .partner-card.featured { grid-template-columns: 1fr; } .partner-img-wrap { min-height: 240px; max-height: 280px; } .partner-info { padding: 24px; } }
+    @media (max-width: 768px) { .partner-card.featured { flex-direction: column; } .partner-img-wrap { flex: none; width: 100%; min-height: 240px; max-height: 280px; } .partner-info { padding: 24px; } }
 
     /* CONTACT — REDESIGN */
     .contact-intro { text-align: center; max-width: 640px; margin: 0 auto 48px; }
