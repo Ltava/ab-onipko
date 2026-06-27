@@ -1381,8 +1381,9 @@
     if (e.target === this) closeModal();
   });
 
-  // LiqPay payment
-  function processPayment() {
+  // LiqPay payment — підпис рахунку рахується НА СЕРВЕРІ (/api/liqpay-sign),
+  // приватний ключ LiqPay більше ніде в браузері не зберігається.
+  async function processPayment() {
     const email   = document.getElementById('payEmail').value.trim();
     const name    = document.getElementById('payName').value.trim();
     const consent = document.getElementById('payConsent').checked;
@@ -1397,41 +1398,37 @@
       return;
     }
 
-    const PUBLIC_KEY  = 'i53924086051';
-    const PRIVATE_KEY = 'a7l04PJdPUaiLBCFqHaAql81E5wGhddUzs66UwYe';
-
     const amount      = currentDoc.price;
     const description = 'АБ Оніпка: ' + currentDoc.title + (isConsult && phone ? ' | ' + phone : '');
     const order_id    = (isConsult ? 'consult_' : 'doc_') + currentDoc.id + '_' + Date.now();
     const base        = window.location.origin + window.location.pathname.replace('index.html','');
     const result_url  = base + (isConsult ? 'dyakuyu.html?type=konsultatsiya' : 'dyakuyu.html');
 
-    // Telegram-нотифікація про оплату консультації
-    if (isConsult) {
-      const BOT_TOKEN = '8928625265:AAG3-a4YIeVuZve5a-vatHUOrUcj5oKUpC4';
-      const CHAT_ID   = '1073109260';
-      const tgText    = `💼 <b>НОВА ОПЛАТА КОНСУЛЬТАЦІЇ</b>\n👤 Ім'я: ${name || '—'}\n📞 Телефон: ${phone}\n📧 Email: ${email}\n💬 Ситуація: ${topic || '—'}\n💰 Сума: 1000 грн\n🕐 ${new Date().toLocaleString('uk-UA')}`;
-      fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-        method: 'POST', headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({ chat_id: CHAT_ID, text: tgText, parse_mode: 'HTML' })
-      }).catch(() => {});
-    }
+    const payBtn = document.getElementById('btnPay');
+    if (payBtn) payBtn.disabled = true;
 
-    const params = JSON.stringify({
-      version: 3, public_key: PUBLIC_KEY, action: 'pay',
-      amount, currency: 'UAH', description, order_id,
-      customer_user_id: email, language: 'uk',
-      result_url, server_url: ''
-    });
+    try {
+      // Нотифікація про оплату консультації — теж через сервер (без BOT_TOKEN у браузері)
+      if (isConsult) {
+        fetch('/api/notify-telegram', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ kind: 'payment', name, phone, email, topic, amount })
+        }).catch(() => {});
+      }
 
-    const data = btoa(unescape(encodeURIComponent(params)));
+      const signRes = await fetch('/api/liqpay-sign', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          amount, description, order_id,
+          customer_user_id: email, result_url
+        })
+      });
 
-    async function sha1base64(str) {
-      const buf = await crypto.subtle.digest('SHA-1', new TextEncoder().encode(str));
-      return btoa(String.fromCharCode(...new Uint8Array(buf)));
-    }
+      if (!signRes.ok) throw new Error('sign request failed');
+      const { data, signature } = await signRes.json();
 
-    sha1base64(PRIVATE_KEY + data + PRIVATE_KEY).then(signature => {
       const form = document.createElement('form');
       form.method = 'POST';
       form.action = 'https://www.liqpay.ua/api/3/checkout';
@@ -1446,7 +1443,11 @@
       form.submit();
       document.body.removeChild(form);
       closeModal();
-    });
+    } catch (err) {
+      alert('Не вдалося ініціювати оплату. Спробуйте ще раз або зв\'яжіться напряму.');
+    } finally {
+      if (payBtn) payBtn.disabled = false;
+    }
   }
 
   // Contact form submit
@@ -1461,25 +1462,19 @@
       message: form.message.value
     };
 
-    // Telegram Bot notification
-    // УВАГА: замініть BOT_TOKEN та CHAT_ID на реальні
-    const BOT_TOKEN = '8928625265:AAG3-a4YIeVuZve5a-vatHUOrUcj5oKUpC4';
-    const CHAT_ID = '1073109260';
-
-    const text = `🔔 Новий запит з сайту АБ «Євгена Оніпка»\n\n` +
-      `👤 Ім'я: ${data.name}\n📞 Телефон: ${data.phone}\n` +
-      `📧 Email: ${data.email || '—'}\n⚖️ Напрямок: ${data.practice || '—'}\n` +
-      `💬 Повідомлення: ${data.message || '—'}\n\n🕐 ${new Date().toLocaleString('uk-UA')}`;
-
-    if (BOT_TOKEN !== 'YOUR_TELEGRAM_BOT_TOKEN') {
-      try {
-        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ chat_id: CHAT_ID, text, parse_mode: 'HTML' })
-        });
-      } catch (err) { console.log('Telegram notification error:', err); }
-    }
+    // Telegram-нотифікація — тепер шлеться через сервер (/api/notify-telegram),
+    // BOT_TOKEN у браузері більше не зберігається.
+    try {
+      await fetch('/api/notify-telegram', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          kind: 'contact',
+          name: data.name, phone: data.phone, email: data.email,
+          practice: data.practice, message: data.message
+        })
+      });
+    } catch (err) { console.log('Telegram notification error:', err); }
 
     form.reset();
     showToast('✓ Запит надіслано! Я зв\'яжуся з вами найближчим часом.');
@@ -1511,6 +1506,18 @@
     return str.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   }
 
+  // Перевіряє, що рядок — справжній абсолютний http(s) URL (захист від "javascript:"
+  // та від розриву атрибута href через лапки/незвичні символи у відповіді проксі).
+  function safeHttpUrl(str) {
+    try {
+      const u = new URL(str);
+      if (u.protocol !== 'http:' && u.protocol !== 'https:') return null;
+      return u.href;
+    } catch (e) {
+      return null;
+    }
+  }
+
   async function loadNews(sourceUrl, listId, limit = 5) {
     const list = document.getElementById(listId);
     try {
@@ -1524,7 +1531,8 @@
         const m = lines[i].match(re);
         if (!m) continue;
         const title = m[1].trim();
-        const url = m[2].trim();
+        const url = safeHttpUrl(m[2].trim());
+        if (!url) continue;
         if (items.some(it => it.url === url)) continue;
         let date = '';
         for (let j = i + 1; j <= i + 3 && j < lines.length; j++) {
@@ -1536,12 +1544,12 @@
       if (!items.length) throw new Error('empty');
       list.innerHTML = items.map(it => `
         <li class="news-item">
-          <a href="${it.url}" target="_blank" rel="noopener">${escapeHtml(it.title)}</a>
+          <a href="${escapeHtml(it.url)}" target="_blank" rel="noopener">${escapeHtml(it.title)}</a>
           ${it.date ? `<span class="news-date">${escapeHtml(it.date)}</span>` : ''}
         </li>
       `).join('');
     } catch (err) {
-      list.innerHTML = `<li class="news-error">Не вдалося завантажити стрічку новин. <a href="${sourceUrl}" target="_blank" rel="noopener">Перейти на джерело →</a></li>`;
+      list.innerHTML = `<li class="news-error">Не вдалося завантажити стрічку новин. <a href="${escapeHtml(sourceUrl)}" target="_blank" rel="noopener">Перейти на джерело →</a></li>`;
     }
   }
 
