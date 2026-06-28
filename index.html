@@ -316,6 +316,12 @@
       transition: background 0.2s; font-family: 'Manrope', sans-serif;
     }
     .doc-buy:hover { background: var(--terra-dark); }
+    .doc-card-multi { cursor: default; }
+    .doc-card-multi:hover { transform: none; box-shadow: none; border-color: var(--cream-dark); }
+    .doc-options { display: flex; flex-direction: column; gap: 16px; }
+    .doc-option { padding-top: 16px; border-top: 1px solid var(--cream-dark); }
+    .doc-option:first-child { padding-top: 0; border-top: none; }
+    .doc-option-label { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; }
 
     /* CONTACT */
     .contact-bg { background: var(--green); }
@@ -769,62 +775,134 @@
   <div class="section-inner">
     <div class="section-header">
       <div class="section-eyebrow">Магазин документів</div>
-      <h2 class="section-title">Складання позовної заяви адвокатом</h2>
-      <p class="section-subtitle">Документ складається особисто адвокатом з урахуванням усіх особливостей вашої справи на основі наданих вами документів — без подальшого судового супроводу.</p>
+      <h2 class="section-title">Готові шаблони та документи, складені адвокатом</h2>
+      <p class="section-subtitle">Оберіть формат: готовий шаблон для самостійного заповнення за середньою ринковою ціною, або документ, що складається особисто адвокатом на підставі наданих вами документів з урахуванням усіх особливостей справи — без подальшого судового супроводу.</p>
     </div>
     <div class="shop-grid">
-      <div class="doc-card" onclick="openModal('rozluchennya', 'Позовна заява про розірвання шлюбу', 2499, 'Позовна заява про розірвання шлюбу складається особисто адвокатом індивідуально під вашу справу на основі наданих документів. Враховує вимоги СК та ЦПК України, містить розрахунок судового збору та порядок подання. Без подальшого судового супроводу.', 'Сімейне право', 'assets/docs/01-rozluchennya.docx', false)">
+      <div class="doc-card doc-card-multi">
         <span class="doc-tag">Сімейне право</span>
         <h3>Позовна заява про розірвання шлюбу</h3>
-        <p>Складається особисто адвокатом за вашими документами, з розрахунком судового збору та порядком подання.</p>
-        <div class="doc-footer">
-          <span class="doc-price">2499 ₴</span>
-          <button class="doc-buy">Замовити</button>
+        <p>Готовий шаблон із підказками для заповнення або документ, складений адвокатом особисто за вашими документами.</p>
+        <div class="doc-options">
+          <div class="doc-option">
+            <div class="doc-option-label">Готовий шаблон</div>
+            <div class="doc-footer">
+              <span class="doc-price">600 ₴</span>
+              <button class="doc-buy" onclick="openModal('rozluchennya-shablon', 'Позовна заява про розірвання шлюбу — готовий шаблон', 600, 'Готовий шаблон позовної заяви про розірвання шлюбу з покроковими підказками для заповнення. Відповідає вимогам СК та ЦПК України, містить розрахунок судового збору та порядок подання.', 'Сімейне право · Шаблон', 'assets/docs/01-rozluchennya.docx', true)">Придбати</button>
+            </div>
+          </div>
+          <div class="doc-option">
+            <div class="doc-option-label">Складання адвокатом особисто</div>
+            <div class="doc-footer">
+              <span class="doc-price">2499 ₴</span>
+              <button class="doc-buy" onclick="openModal('rozluchennya-personal', 'Позовна заява про розірвання шлюбу — складання адвокатом', 2499, 'Позовна заява складається особисто адвокатом індивідуально під вашу справу на основі наданих документів. Враховує вимоги СК та ЦПК України, містить розрахунок судового збору та порядок подання. Без подальшого судового супроводу.', 'Сімейне право · Персонально', 'assets/docs/01-rozluchennya.docx', false)">Замовити</button>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="doc-card" onclick="openModal('skarga-slidchyi', 'Скарга на дії слідчого або прокурора', 3499, 'Скарга до слідчого судді на рішення, дії чи бездіяльність слідчого або прокурора складається особисто адвокатом індивідуально під обставини вашої справи на основі наданих документів, відповідно до ст. 303–306 КПК України. Без подальшого судового супроводу.', 'Кримінальне право', 'assets/docs/02-skarga-slidchyi.docx', false)">
+      <div class="doc-card doc-card-multi">
         <span class="doc-tag">Кримінальне право</span>
         <h3>Скарга на дії слідчого / прокурора</h3>
-        <p>Складається особисто адвокатом за вашими документами — на рішення, дії чи бездіяльність у досудовому провадженні.</p>
-        <div class="doc-footer">
-          <span class="doc-price">3499 ₴</span>
-          <button class="doc-buy">Замовити</button>
+        <p>Готовий шаблон з інструкцією щодо строків подання або документ, складений адвокатом особисто за вашими документами.</p>
+        <div class="doc-options">
+          <div class="doc-option">
+            <div class="doc-option-label">Готовий шаблон</div>
+            <div class="doc-footer">
+              <span class="doc-price">850 ₴</span>
+              <button class="doc-buy" onclick="openModal('skarga-slidchyi-shablon', 'Скарга на дії слідчого або прокурора — готовий шаблон', 850, 'Шаблон скарги до слідчого судді на рішення, дії чи бездіяльність слідчого або прокурора відповідно до ст. 303–306 КПК України. З інструкцією щодо строків подання.', 'Кримінальне право · Шаблон', 'assets/docs/02-skarga-slidchyi.docx', true)">Придбати</button>
+            </div>
+          </div>
+          <div class="doc-option">
+            <div class="doc-option-label">Складання адвокатом особисто</div>
+            <div class="doc-footer">
+              <span class="doc-price">3499 ₴</span>
+              <button class="doc-buy" onclick="openModal('skarga-slidchyi-personal', 'Скарга на дії слідчого або прокурора — складання адвокатом', 3499, 'Скарга до слідчого судді складається особисто адвокатом індивідуально під обставини вашої справи на основі наданих документів, відповідно до ст. 303–306 КПК України. Без подальшого судового супроводу.', 'Кримінальне право · Персонально', 'assets/docs/02-skarga-slidchyi.docx', false)">Замовити</button>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="doc-card" onclick="openModal('borg', 'Позов про стягнення боргу за розпискою', 3499, 'Позовна заява про стягнення заборгованості за договором позики (розпискою) складається особисто адвокатом індивідуально під вашу справу на основі наданих документів, з розрахунком трьох процентів річних та інфляційних втрат. Без подальшого судового супроводу.', 'Цивільне право', 'assets/docs/03-styahnennya-borhu.docx', false)">
+      <div class="doc-card doc-card-multi">
         <span class="doc-tag">Цивільне право</span>
         <h3>Позов про стягнення боргу за розпискою</h3>
-        <p>Складається особисто адвокатом за вашими документами, з розрахунком процентів та інфляційних втрат.</p>
-        <div class="doc-footer">
-          <span class="doc-price">3499 ₴</span>
-          <button class="doc-buy">Замовити</button>
+        <p>Готовий шаблон з розрахунком процентів або документ, складений адвокатом особисто за вашими документами.</p>
+        <div class="doc-options">
+          <div class="doc-option">
+            <div class="doc-option-label">Готовий шаблон</div>
+            <div class="doc-footer">
+              <span class="doc-price">600 ₴</span>
+              <button class="doc-buy" onclick="openModal('borg-shablon', 'Позов про стягнення боргу за розпискою — готовий шаблон', 600, 'Шаблон позовної заяви про стягнення заборгованості за договором позики (розпискою) з розрахунком трьох процентів річних та інфляційних втрат, а також порядком сплати судового збору.', 'Цивільне право · Шаблон', 'assets/docs/03-styahnennya-borhu.docx', true)">Придбати</button>
+            </div>
+          </div>
+          <div class="doc-option">
+            <div class="doc-option-label">Складання адвокатом особисто</div>
+            <div class="doc-footer">
+              <span class="doc-price">3499 ₴</span>
+              <button class="doc-buy" onclick="openModal('borg-personal', 'Позов про стягнення боргу за розпискою — складання адвокатом', 3499, 'Позовна заява складається особисто адвокатом індивідуально під вашу справу на основі наданих документів, з розрахунком трьох процентів річних та інфляційних втрат. Без подальшого судового супроводу.', 'Цивільне право · Персонально', 'assets/docs/03-styahnennya-borhu.docx', false)">Замовити</button>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="doc-card" onclick="openModal('spadshchyna', 'Позов про визнання права власності у порядку спадкування', 3499, 'Позовна заява для випадків фактичного прийняття спадщини або пропуску шестимісячного строку звернення до нотаріуса складається особисто адвокатом індивідуально під вашу справу на основі наданих документів. Без подальшого судового супроводу.', 'Спадкове право', 'assets/docs/04-spadshchyna.docx', false)">
+      <div class="doc-card doc-card-multi">
         <span class="doc-tag">Спадкове право</span>
         <h3>Визнання права власності у спадщину</h3>
-        <p>Складається особисто адвокатом за вашими документами — для фактичного прийняття спадщини або пропуску строку.</p>
-        <div class="doc-footer">
-          <span class="doc-price">3499 ₴</span>
-          <button class="doc-buy">Замовити</button>
+        <p>Готовий шаблон для типових випадків або документ, складений адвокатом особисто за вашими документами.</p>
+        <div class="doc-options">
+          <div class="doc-option">
+            <div class="doc-option-label">Готовий шаблон</div>
+            <div class="doc-footer">
+              <span class="doc-price">950 ₴</span>
+              <button class="doc-buy" onclick="openModal('spadshchyna-shablon', 'Визнання права власності у спадщину — готовий шаблон', 950, 'Шаблон позовної заяви для випадків фактичного прийняття спадщини або пропуску шестимісячного строку звернення до нотаріуса. Відповідає ЦК та ЦПК України.', 'Спадкове право · Шаблон', 'assets/docs/04-spadshchyna.docx', true)">Придбати</button>
+            </div>
+          </div>
+          <div class="doc-option">
+            <div class="doc-option-label">Складання адвокатом особисто</div>
+            <div class="doc-footer">
+              <span class="doc-price">3499 ₴</span>
+              <button class="doc-buy" onclick="openModal('spadshchyna-personal', 'Визнання права власності у спадщину — складання адвокатом', 3499, 'Позовна заява складається особисто адвокатом індивідуально під вашу справу на основі наданих документів — для фактичного прийняття спадщини або пропуску строку звернення до нотаріуса. Без подальшого судового супроводу.', 'Спадкове право · Персонально', 'assets/docs/04-spadshchyna.docx', false)">Замовити</button>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="doc-card" onclick="openModal('postavka', 'Позов про стягнення заборгованості за договором поставки', 3499, 'Позовна заява до господарського суду про стягнення заборгованості з контрагента за договором поставки складається особисто адвокатом індивідуально під вашу справу на основі наданих документів, з розрахунком пені та процентів. Без подальшого судового супроводу.', 'Корпоративне право', 'assets/docs/05-postavka-borg.docx', false)">
+      <div class="doc-card doc-card-multi">
         <span class="doc-tag">Корпоративне право</span>
         <h3>Стягнення боргу за договором поставки</h3>
-        <p>Складається особисто адвокатом за вашими документами — господарський спір: борг, пеня, проценти.</p>
-        <div class="doc-footer">
-          <span class="doc-price">3499 ₴</span>
-          <button class="doc-buy">Замовити</button>
+        <p>Готовий шаблон з розрахунком пені та процентів або документ, складений адвокатом особисто за вашими документами.</p>
+        <div class="doc-options">
+          <div class="doc-option">
+            <div class="doc-option-label">Готовий шаблон</div>
+            <div class="doc-footer">
+              <span class="doc-price">1300 ₴</span>
+              <button class="doc-buy" onclick="openModal('postavka-shablon', 'Стягнення боргу за договором поставки — готовий шаблон', 1300, 'Шаблон позовної заяви до господарського суду про стягнення заборгованості з контрагента за договором поставки, з розрахунком пені та процентів. Відповідає ГК та ГПК України.', 'Корпоративне право · Шаблон', 'assets/docs/05-postavka-borg.docx', true)">Придбати</button>
+            </div>
+          </div>
+          <div class="doc-option">
+            <div class="doc-option-label">Складання адвокатом особисто</div>
+            <div class="doc-footer">
+              <span class="doc-price">3499 ₴</span>
+              <button class="doc-buy" onclick="openModal('postavka-personal', 'Стягнення боргу за договором поставки — складання адвокатом', 3499, 'Позовна заява до господарського суду складається особисто адвокатом індивідуально під вашу справу на основі наданих документів, з розрахунком пені та процентів. Без подальшого судового супроводу.', 'Корпоративне право · Персонально', 'assets/docs/05-postavka-borg.docx', false)">Замовити</button>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="doc-card" onclick="openModal('admin-pozov', 'Позов про оскарження рішення органу влади', 3499, 'Адміністративний позов про визнання протиправним та скасування рішення, наказу чи висновку органу влади складається особисто адвокатом індивідуально під вашу справу на основі наданих документів, відповідно до КАС України, з розрахунком судового збору та строками звернення. Без подальшого судового супроводу.', 'Адміністративне право', 'assets/docs/06-admin-pozov.docx', false)">
+      <div class="doc-card doc-card-multi">
         <span class="doc-tag">Адміністративне право</span>
         <h3>Оскарження рішення органу влади</h3>
-        <p>Складається особисто адвокатом за вашими документами — визнання протиправним та скасування рішення (КАС України).</p>
-        <div class="doc-footer">
-          <span class="doc-price">3499 ₴</span>
-          <button class="doc-buy">Замовити</button>
+        <p>Готовий шаблон з розрахунком судового збору або документ, складений адвокатом особисто за вашими документами.</p>
+        <div class="doc-options">
+          <div class="doc-option">
+            <div class="doc-option-label">Готовий шаблон</div>
+            <div class="doc-footer">
+              <span class="doc-price">750 ₴</span>
+              <button class="doc-buy" onclick="openModal('admin-pozov-shablon', 'Оскарження рішення органу влади — готовий шаблон', 750, 'Шаблон адміністративного позову про визнання протиправним та скасування рішення, наказу чи висновку органу влади. Відповідає КАС України, з розрахунком судового збору та строками звернення.', 'Адміністративне право · Шаблон', 'assets/docs/06-admin-pozov.docx', true)">Придбати</button>
+            </div>
+          </div>
+          <div class="doc-option">
+            <div class="doc-option-label">Складання адвокатом особисто</div>
+            <div class="doc-footer">
+              <span class="doc-price">3499 ₴</span>
+              <button class="doc-buy" onclick="openModal('admin-pozov-personal', 'Оскарження рішення органу влади — складання адвокатом', 3499, 'Адміністративний позов складається особисто адвокатом індивідуально під вашу справу на основі наданих документів, відповідно до КАС України, з розрахунком судового збору та строками звернення. Без подальшого судового супроводу.', 'Адміністративне право · Персонально', 'assets/docs/06-admin-pozov.docx', false)">Замовити</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
