@@ -83,6 +83,7 @@
       border-radius: var(--radius); font-weight: 600 !important; transition: background 0.2s !important;
     }
     .nav-cta:hover { background: var(--terra-dark) !important; }
+    .nav-badge { display: inline-block; background: var(--terra); color: white; font-size: 9px; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; padding: 2px 7px; border-radius: 20px; margin-left: 5px; vertical-align: middle; }
     .burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
     .burger span { display: block; width: 22px; height: 2px; background: white; border-radius: 2px; transition: 0.3s; }
     .mobile-menu { display: none; }
@@ -322,6 +323,20 @@
     .doc-option { padding-top: 16px; border-top: 1px solid var(--cream-dark); }
     .doc-option:first-child { padding-top: 0; border-top: none; }
     .doc-option-label { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; }
+    .doc-preview-link { display: block; margin-bottom: 14px; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--cream-dark); text-decoration: none; }
+    .doc-preview-link img { width: 100%; display: block; }
+    .doc-preview-cap { display: flex; align-items: center; justify-content: center; gap: 6px; text-align: center; font-size: 11.5px; font-weight: 700; color: var(--green); padding: 8px 6px; background: white; letter-spacing: 0.01em; }
+    .doc-preview-link:hover .doc-preview-cap { color: var(--terra); }
+    .doc-meta-line { font-size: 12px; color: var(--text-muted); margin: 0 0 16px; display: flex; align-items: center; gap: 6px; }
+    .doc-compare { background: white; border: 1px solid var(--cream-dark); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 18px; display: flex; flex-direction: column; gap: 10px; }
+    .doc-compare-row { font-size: 12.5px; line-height: 1.55; color: var(--text-muted); }
+    .doc-compare-row b { color: var(--green); font-weight: 700; }
+    .shop-why { background: var(--cream); border-left: 3px solid var(--terra); border-radius: 0 var(--radius) var(--radius) 0; padding: 18px 22px; margin: 28px 0 32px; max-width: 900px; }
+    .shop-why p { font-size: 14px; line-height: 1.7; color: var(--text); margin: 0; }
+    .shop-why p + p { margin-top: 10px; }
+    .shop-why strong { color: var(--green); }
+    .shop-erau { font-size: 13px; color: var(--text-muted); margin-top: 6px; }
+    .shop-erau a { color: var(--green); font-weight: 600; text-decoration: underline; }
 
     /* CONTACT */
     .contact-bg { background: var(--green); }
@@ -421,7 +436,7 @@
 
     /* NEWS SECTION */
     .news-bg { background: var(--cream-dark); }
-    .news-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .news-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
     .news-block { background: white; border-radius: var(--radius-lg); padding: 28px; border: 1px solid var(--cream-dark); }
     .news-block-header { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--cream-dark); }
     .news-block-header h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; color: var(--green); }
@@ -581,7 +596,7 @@
   <div class="nav-links">
     <a href="#services">Послуги</a>
     <a href="#about">Про адвоката</a>
-    <a href="#shop">Документи</a>
+    <a href="#shop" class="nav-shop-link">Документи <span class="nav-badge">Магазин</span></a>
     <a href="#military">Військовим</a>
     <a href="#faq">FAQ</a>
     <a href="#news">Новини</a>
@@ -595,7 +610,7 @@
 <div class="mobile-menu" id="mobileMenu">
   <a href="#services" onclick="toggleMenu()">Послуги</a>
   <a href="#about" onclick="toggleMenu()">Про адвоката</a>
-  <a href="#shop" onclick="toggleMenu()">Документи</a>
+  <a href="#shop" onclick="toggleMenu()">Документи <span class="nav-badge">Магазин</span></a>
   <a href="#military" onclick="toggleMenu()">Військовим</a>
   <a href="#faq" onclick="toggleMenu()">FAQ</a>
   <a href="#news" onclick="toggleMenu()">Новини</a>
@@ -613,6 +628,7 @@
       <div class="hero-actions fade-in-4">
         <a href="#" class="btn-primary" onclick="openConsultModal(); return false;">Записатися на консультацію →</a>
         <a href="poslugy.html" class="btn-outline">Мої практики</a>
+        <a href="#shop" class="btn-outline">Готові зразки документів — від 200 ₴</a>
       </div>
       <div class="hero-messengers fade-in-4">
         <span class="hero-msg-label">Написати напряму:</span>
@@ -745,6 +761,7 @@
           Видане 28 грудня 2006 року<br>
           Полтавська обласна адвокатська рада
         </div>
+        <a href="https://erau.unba.org.ua/" target="_blank" rel="noopener" style="display:inline-block;margin-top:12px;font-size:12.5px;font-weight:600;color:var(--green);text-decoration:underline;">Перевірити свідоцтво в ЄРАУ →</a>
         <div class="about-badge-row">
           <span class="about-badge">Сімейне право</span>
           <span class="about-badge">Кримінальний захист</span>
@@ -778,11 +795,25 @@
       <h2 class="section-title">Готові шаблони та документи, складені адвокатом</h2>
       <p class="section-subtitle">Оберіть формат: готовий шаблон для самостійного заповнення за середньою ринковою ціною, або документ, що складається особисто адвокатом на підставі наданих вами документів з урахуванням усіх особливостей справи — без подальшого судового супроводу.</p>
     </div>
+    <div class="shop-why">
+      <p><strong>Чому не варто брати безкоштовний зразок з форуму чи іншого сайту:</strong> такі шаблони часто складені під застарілу редакцію ЦПК, ЦК чи КАС України, без урахування чинної практики Верховного Суду, і не завжди відповідають вимогам конкретного суду щодо форми та додатків. Кожен шаблон у цьому магазині складений і перевірений мною особисто, адвокатом Оніпком Євгеном (свідоцтво № 502), і оновлюється за змінами законодавства.</p>
+      <p>Для порівняння: складання позовної заяви адвокатом «під ключ» на особистому прийомі коштує <strong>від 1&nbsp;500&nbsp;₴</strong> (див. <a href="poslugy.html" style="color:var(--green);font-weight:600;">орієнтовні ціни на послуги</a>) — готовий шаблон обійдеться в рази дешевше, а документ, складений адвокатом особисто під вашу справу, — це той самий рівень якості за нижчою ціною, без судового супроводу.</p>
+      <p class="shop-erau">Перевірити свідоцтво адвоката № 502 можна в <a href="https://erau.unba.org.ua/" target="_blank" rel="noopener">Єдиному реєстрі адвокатів України →</a></p>
+    </div>
     <div class="shop-grid">
       <div class="doc-card doc-card-multi">
         <span class="doc-tag">Сімейне право</span>
-        <h3>Позовна заява про розірвання шлюбу</h3>
+        <h3><a href="zrazok-pozovu-rozluchennya.html" style="color:inherit;text-decoration:none;">Позовна заява про розірвання шлюбу</a></h3>
         <p>Готовий шаблон із підказками для заповнення або документ, складений адвокатом особисто за вашими документами.</p>
+        <a href="assets/previews/01-rozluchennya-full.jpg" target="_blank" rel="noopener" class="doc-preview-link">
+          <img src="assets/previews/01-rozluchennya-thumb.jpg" alt="Приклад сторінки шаблону: Позовна заява про розірвання шлюбу" loading="lazy" width="480" height="620">
+          <span class="doc-preview-cap">👁 Переглянути приклад сторінки</span>
+        </a>
+        <p class="doc-meta-line">📄 3 стор. · формат .docx · з покроковими підказками</p>
+        <div class="doc-compare">
+          <div class="doc-compare-row"><b>Готовий шаблон:</b> Сам заповнюєте за покроковими підказками · типова ситуація без спору про дітей і майно · файл одразу на email.</div>
+          <div class="doc-compare-row"><b>Адвокат особисто:</b> Аналізую ваші документи особисто · формулювання під обставини саме вашої справи · перевірка відповідності вимогам конкретного суду.</div>
+        </div>
         <div class="doc-options">
           <div class="doc-option">
             <div class="doc-option-label">Готовий шаблон</div>
@@ -802,8 +833,17 @@
       </div>
       <div class="doc-card doc-card-multi">
         <span class="doc-tag">Кримінальне право</span>
-        <h3>Скарга на дії слідчого / прокурора</h3>
+        <h3><a href="zrazok-skargy-slidchyi.html" style="color:inherit;text-decoration:none;">Скарга на дії слідчого / прокурора</a></h3>
         <p>Готовий шаблон з інструкцією щодо строків подання або документ, складений адвокатом особисто за вашими документами.</p>
+        <a href="assets/previews/02-skarga-slidchyi-full.jpg" target="_blank" rel="noopener" class="doc-preview-link">
+          <img src="assets/previews/02-skarga-slidchyi-thumb.jpg" alt="Приклад сторінки шаблону: Скарга на дії слідчого / прокурора" loading="lazy" width="480" height="620">
+          <span class="doc-preview-cap">👁 Переглянути приклад сторінки</span>
+        </a>
+        <p class="doc-meta-line">📄 3 стор. · формат .docx · з покроковими підказками</p>
+        <div class="doc-compare">
+          <div class="doc-compare-row"><b>Готовий шаблон:</b> Сам заповнюєте за інструкцією · враховані строки подання за ст. 303–306 КПК · файл одразу на email.</div>
+          <div class="doc-compare-row"><b>Адвокат особисто:</b> Аналізую матеріали вашої справи особисто · формулювання під конкретні дії слідчого/прокурора · перевірка процесуальних строків.</div>
+        </div>
         <div class="doc-options">
           <div class="doc-option">
             <div class="doc-option-label">Готовий шаблон</div>
@@ -823,8 +863,17 @@
       </div>
       <div class="doc-card doc-card-multi">
         <span class="doc-tag">Цивільне право</span>
-        <h3>Позов про стягнення боргу за розпискою</h3>
+        <h3><a href="zrazok-pozovu-borg-rozpyska.html" style="color:inherit;text-decoration:none;">Позов про стягнення боргу за розпискою</a></h3>
         <p>Готовий шаблон з розрахунком процентів або документ, складений адвокатом особисто за вашими документами.</p>
+        <a href="assets/previews/03-styahnennya-borhu-full.jpg" target="_blank" rel="noopener" class="doc-preview-link">
+          <img src="assets/previews/03-styahnennya-borhu-thumb.jpg" alt="Приклад сторінки шаблону: Позов про стягнення боргу за розпискою" loading="lazy" width="480" height="620">
+          <span class="doc-preview-cap">👁 Переглянути приклад сторінки</span>
+        </a>
+        <p class="doc-meta-line">📄 3 стор. · формат .docx · з покроковими підказками</p>
+        <div class="doc-compare">
+          <div class="doc-compare-row"><b>Готовий шаблон:</b> Сам заповнюєте суму боргу та дані сторін · формула розрахунку 3% річних та інфляційних вже в шаблоні · файл одразу на email.</div>
+          <div class="doc-compare-row"><b>Адвокат особисто:</b> Аналізую вашу розписку та обставини особисто · точний розрахунок під ваші дати та суму · перевірка перед поданням до суду.</div>
+        </div>
         <div class="doc-options">
           <div class="doc-option">
             <div class="doc-option-label">Готовий шаблон</div>
@@ -844,8 +893,17 @@
       </div>
       <div class="doc-card doc-card-multi">
         <span class="doc-tag">Спадкове право</span>
-        <h3>Визнання права власності у спадщину</h3>
+        <h3><a href="zrazok-spadshchyna.html" style="color:inherit;text-decoration:none;">Визнання права власності у спадщину</a></h3>
         <p>Готовий шаблон для типових випадків або документ, складений адвокатом особисто за вашими документами.</p>
+        <a href="assets/previews/04-spadshchyna-full.jpg" target="_blank" rel="noopener" class="doc-preview-link">
+          <img src="assets/previews/04-spadshchyna-thumb.jpg" alt="Приклад сторінки шаблону: Визнання права власності у спадщину" loading="lazy" width="480" height="620">
+          <span class="doc-preview-cap">👁 Переглянути приклад сторінки</span>
+        </a>
+        <p class="doc-meta-line">📄 4 стор. · формат .docx · з покроковими підказками</p>
+        <div class="doc-compare">
+          <div class="doc-compare-row"><b>Готовий шаблон:</b> Сам заповнюєте за підказками · підходить для типового фактичного прийняття спадщини · файл одразу на email.</div>
+          <div class="doc-compare-row"><b>Адвокат особисто:</b> Аналізую документи на спадщину особисто · стратегія під ваш конкретний випадок (пропущений строк / спір) · перевірка перед поданням.</div>
+        </div>
         <div class="doc-options">
           <div class="doc-option">
             <div class="doc-option-label">Готовий шаблон</div>
@@ -865,8 +923,17 @@
       </div>
       <div class="doc-card doc-card-multi">
         <span class="doc-tag">Корпоративне право</span>
-        <h3>Стягнення боргу за договором поставки</h3>
+        <h3><a href="zrazok-styagnennya-borgu-postavka.html" style="color:inherit;text-decoration:none;">Стягнення боргу за договором поставки</a></h3>
         <p>Готовий шаблон з розрахунком пені та процентів або документ, складений адвокатом особисто за вашими документами.</p>
+        <a href="assets/previews/05-postavka-borg-full.jpg" target="_blank" rel="noopener" class="doc-preview-link">
+          <img src="assets/previews/05-postavka-borg-thumb.jpg" alt="Приклад сторінки шаблону: Стягнення боргу за договором поставки" loading="lazy" width="480" height="620">
+          <span class="doc-preview-cap">👁 Переглянути приклад сторінки</span>
+        </a>
+        <p class="doc-meta-line">📄 4 стор. · формат .docx · з покроковими підказками</p>
+        <div class="doc-compare">
+          <div class="doc-compare-row"><b>Готовий шаблон:</b> Сам заповнюєте дані договору та суму · формули розрахунку пені й процентів вже в шаблоні · файл одразу на email.</div>
+          <div class="doc-compare-row"><b>Адвокат особисто:</b> Аналізую договір і первинні документи особисто · розрахунок і формулювання під вашу справу · перевірка перед поданням до господарського суду.</div>
+        </div>
         <div class="doc-options">
           <div class="doc-option">
             <div class="doc-option-label">Готовий шаблон</div>
@@ -886,8 +953,17 @@
       </div>
       <div class="doc-card doc-card-multi">
         <span class="doc-tag">Адміністративне право</span>
-        <h3>Оскарження рішення органу влади</h3>
+        <h3><a href="zrazok-oskarzhennya-rishennya-vlady.html" style="color:inherit;text-decoration:none;">Оскарження рішення органу влади</a></h3>
         <p>Готовий шаблон з розрахунком судового збору або документ, складений адвокатом особисто за вашими документами.</p>
+        <a href="assets/previews/06-admin-pozov-full.jpg" target="_blank" rel="noopener" class="doc-preview-link">
+          <img src="assets/previews/06-admin-pozov-thumb.jpg" alt="Приклад сторінки шаблону: Оскарження рішення органу влади" loading="lazy" width="480" height="620">
+          <span class="doc-preview-cap">👁 Переглянути приклад сторінки</span>
+        </a>
+        <p class="doc-meta-line">📄 4 стор. · формат .docx · з покроковими підказками</p>
+        <div class="doc-compare">
+          <div class="doc-compare-row"><b>Готовий шаблон:</b> Сам заповнюєте за підказками · відповідає КАС України · розрахунок судового збору включено.</div>
+          <div class="doc-compare-row"><b>Адвокат особисто:</b> Аналізую оскаржуване рішення особисто · формулювання правових підстав під вашу ситуацію · перевірка строків звернення до суду.</div>
+        </div>
         <div class="doc-options">
           <div class="doc-option">
             <div class="doc-option-label">Готовий шаблон</div>
@@ -922,6 +998,11 @@
         <span class="doc-tag">Військовим · Сімейне право</span>
         <h3>Розірвання шлюбу з військовослужбовцем</h3>
         <p>З урахуванням повідомлення через військову частину та можливості заочного розгляду.</p>
+        <a href="assets/previews/07-voiskovi-rozluchennya-full.jpg" target="_blank" rel="noopener" class="doc-preview-link" onclick="event.stopPropagation()">
+          <img src="assets/previews/07-voiskovi-rozluchennya-thumb.jpg" alt="Приклад сторінки шаблону: Розірвання шлюбу з військовослужбовцем" loading="lazy" width="480" height="620">
+          <span class="doc-preview-cap">👁 Переглянути приклад сторінки</span>
+        </a>
+        <p class="doc-meta-line">📄 3 стор. · формат .docx</p>
         <div class="doc-footer">
           <span class="doc-price">200 ₴</span>
           <button class="doc-buy">Придбати</button>
@@ -931,6 +1012,11 @@
         <span class="doc-tag">Військовим · Кримінальне право</span>
         <h3>Зміна запобіжного заходу</h3>
         <p>Для обвинуваченого військовослужбовця — на більш м'який запобіжний захід.</p>
+        <a href="assets/previews/08-voiskovi-zapobizhnyi-full.jpg" target="_blank" rel="noopener" class="doc-preview-link" onclick="event.stopPropagation()">
+          <img src="assets/previews/08-voiskovi-zapobizhnyi-thumb.jpg" alt="Приклад сторінки шаблону: Зміна запобіжного заходу" loading="lazy" width="480" height="620">
+          <span class="doc-preview-cap">👁 Переглянути приклад сторінки</span>
+        </a>
+        <p class="doc-meta-line">📄 4 стор. · формат .docx</p>
         <div class="doc-footer">
           <span class="doc-price">300 ₴</span>
           <button class="doc-buy">Придбати</button>
@@ -940,6 +1026,11 @@
         <span class="doc-tag">Військовим · Цивільне право</span>
         <h3>Встановлення факту спільного проживання</h3>
         <p>Для оформлення статусу члена сім'ї військовослужбовця та виплат, окреме провадження.</p>
+        <a href="assets/previews/09-voiskovi-fakt-prozhyvannya-full.jpg" target="_blank" rel="noopener" class="doc-preview-link" onclick="event.stopPropagation()">
+          <img src="assets/previews/09-voiskovi-fakt-prozhyvannya-thumb.jpg" alt="Приклад сторінки шаблону: Встановлення факту спільного проживання" loading="lazy" width="480" height="620">
+          <span class="doc-preview-cap">👁 Переглянути приклад сторінки</span>
+        </a>
+        <p class="doc-meta-line">📄 4 стор. · формат .docx</p>
         <div class="doc-footer">
           <span class="doc-price">200 ₴</span>
           <button class="doc-buy">Придбати</button>
@@ -949,6 +1040,11 @@
         <span class="doc-tag">Військовим · Спадкове право</span>
         <h3>Встановлення факту для спадщини</h3>
         <p>Після загибелі військовослужбовця — родинні відносини або перебування на утриманні.</p>
+        <a href="assets/previews/10-voiskovi-spadshchyna-fakt-full.jpg" target="_blank" rel="noopener" class="doc-preview-link" onclick="event.stopPropagation()">
+          <img src="assets/previews/10-voiskovi-spadshchyna-fakt-thumb.jpg" alt="Приклад сторінки шаблону: Встановлення факту для спадщини" loading="lazy" width="480" height="620">
+          <span class="doc-preview-cap">👁 Переглянути приклад сторінки</span>
+        </a>
+        <p class="doc-meta-line">📄 4 стор. · формат .docx</p>
         <div class="doc-footer">
           <span class="doc-price">250 ₴</span>
           <button class="doc-buy">Придбати</button>
@@ -958,6 +1054,11 @@
         <span class="doc-tag">Військовим · Бізнес</span>
         <h3>Розірвання договору оренди (мобілізація)</h3>
         <p>Розірвання договору та повернення коштів у зв'язку з призовом на службу.</p>
+        <a href="assets/previews/11-voiskovi-orenda-full.jpg" target="_blank" rel="noopener" class="doc-preview-link" onclick="event.stopPropagation()">
+          <img src="assets/previews/11-voiskovi-orenda-thumb.jpg" alt="Приклад сторінки шаблону: Розірвання договору оренди (мобілізація)" loading="lazy" width="480" height="620">
+          <span class="doc-preview-cap">👁 Переглянути приклад сторінки</span>
+        </a>
+        <p class="doc-meta-line">📄 4 стор. · формат .docx</p>
         <div class="doc-footer">
           <span class="doc-price">300 ₴</span>
           <button class="doc-buy">Придбати</button>
@@ -967,6 +1068,11 @@
         <span class="doc-tag">Військовим · Адміністративне право</span>
         <h3>Оскарження висновку ВЛК</h3>
         <p>Визнання протиправним та скасування висновку військово-лікарської комісії.</p>
+        <a href="assets/previews/12-voiskovi-vlk-full.jpg" target="_blank" rel="noopener" class="doc-preview-link" onclick="event.stopPropagation()">
+          <img src="assets/previews/12-voiskovi-vlk-thumb.jpg" alt="Приклад сторінки шаблону: Оскарження висновку ВЛК" loading="lazy" width="480" height="620">
+          <span class="doc-preview-cap">👁 Переглянути приклад сторінки</span>
+        </a>
+        <p class="doc-meta-line">📄 4 стор. · формат .docx</p>
         <div class="doc-footer">
           <span class="doc-price">250 ₴</span>
           <button class="doc-buy">Придбати</button>
@@ -982,9 +1088,28 @@
     <div class="section-header">
       <div class="section-eyebrow">Завжди в курсі</div>
       <h2 class="section-title">Юридичні новини та практика Верховного Суду</h2>
-      <p class="section-subtitle">Останні матеріали профільних правових видань. Стрічки оновлюються автоматично з відкритих джерел.</p>
+      <p class="section-subtitle">Власні короткі поради щодо оформлення документів і останні матеріали профільних правових видань.</p>
     </div>
     <div class="news-grid">
+      <div class="news-block">
+        <div class="news-block-header">
+          <h3>Поради адвоката</h3>
+        </div>
+        <ul class="news-list">
+          <li class="news-item">
+            <a href="zrazok-pozovu-rozluchennya.html">Як правильно скласти позовну заяву про розірвання шлюбу в 2026 році</a>
+            <span class="news-date">Куди подавати позов, що обов'язково вказати і чому типовий безкоштовний шаблон часто містить помилку в підсудності →</span>
+          </li>
+          <li class="news-item">
+            <a href="zrazok-pozovu-borg-rozpyska.html">Що робити, якщо не повертають борг за розпискою</a>
+            <span class="news-date">Претензія, позов, розрахунок трьох процентів річних та інфляційних втрат — покроково →</span>
+          </li>
+          <li class="news-item">
+            <a href="zrazok-spadshchyna.html">Як оформити спадщину, якщо пропущено шестимісячний строк</a>
+            <span class="news-date">Два різні шляхи захисту права на спадщину — і як не переплутати підставу позову →</span>
+          </li>
+        </ul>
+      </div>
       <div class="news-block">
         <div class="news-block-header">
           <h3>Судово-юридична газета</h3>
