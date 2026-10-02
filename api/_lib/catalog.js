@@ -79,5 +79,5 @@ module.exports = {
   ]),
 
   // ── Консультація ────────────────────────────────────────────────────
-  'konsultatsiya': { kind: 'consultation', title: 'Юридична консультація (1 год)', price: 1000 }
+  'konsultatsiya': { kind: 'consultation', title: 'Юридична консультація (30 хв)', price: 1000 }
 };
