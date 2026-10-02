@@ -6,6 +6,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
   <link rel="shortcut icon" href="/assets/favicon/favicon.ico">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Дякуємо | АБ «Євгена Оніпка»</title>
@@ -40,64 +41,154 @@
     .links a { font-size: 13px; color: #9e9993; text-decoration: none; }
     .links a:hover { color: var(--terra); }
     .note { margin-top: 16px; font-size: 13px; color: #c5c0bb; }
+    .icon-wait { background: #b9b2aa; }
+    .icon-err { background: #a3502f; }
+    .files { display: flex; flex-direction: column; gap: 10px; margin: 22px 0 8px; }
+    .file-btn { display: flex; align-items: center; gap: 10px; justify-content: center; background: var(--green); color: #fff; padding: 14px 18px; border-radius: 6px; font-weight: 600; font-size: 14px; text-decoration: none; }
+    .file-btn:hover { background: var(--green-dark); }
+    .confirm { text-align: left; font-size: 12.5px; line-height: 1.65; color: #4a4540; background: #f7f3ee; border-radius: 10px; padding: 16px 20px; margin-top: 20px; }
+    .confirm p { font-size: 12.5px; color: #4a4540; margin-bottom: 6px; }
+    .confirm strong { color: #1a1a1a; }
+    .confirm a { color: var(--terra); }
+    .spinner { width: 28px; height: 28px; border: 3px solid rgba(255,255,255,.4); border-top-color: #fff; border-radius: 50%; animation: spin 1s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @media (max-width: 520px) { .card { padding: 40px 22px; } }
+    @media print { .actions, .links, .files { display: none; } body { background: #fff; } .card { box-shadow: none; } }
   </style>
 </head>
 <body>
-  <div class="card" id="cardContent">
-    <!-- Вміст підставляється JS залежно від ?type= -->
-  </div>
+  <div class="card" id="cardContent" aria-live="polite"></div>
 
   <script>
-    const isConsult = new URLSearchParams(window.location.search).get('type') === 'konsultatsiya';
-    const card = document.getElementById('cardContent');
+    (function () {
+      const qs = new URLSearchParams(window.location.search);
+      const order = qs.get('order') || '';
+      const card = document.getElementById('cardContent');
+      const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
-    if (isConsult) {
-      card.innerHTML = `
-        <div class="icon icon-consult">
-          <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        </div>
-        <h1>Оплату отримано!</h1>
-        <p>Консультацію <span class="highlight-terra">оплачено успішно</span>.</p>
-        <p>Я особисто зв'яжуся з вами найближчим часом для погодження зручного часу та формату.</p>
-        <div class="steps">
-          <div class="step"><div class="step-num">1</div><div>Очікуйте дзвінка або повідомлення на вказаний телефон чи email — зазвичай протягом кількох годин у робочий час.</div></div>
-          <div class="step"><div class="step-num">2</div><div>Ми узгодимо зручний час і формат: телефон, відеозв'язок або особиста зустріч у Полтаві.</div></div>
-          <div class="step"><div class="step-num">3</div><div>Підготуйте наявні документи по справі — це допоможе провести консультацію ефективніше.</div></div>
-        </div>
-        <div class="actions">
-          <a href="index.html" class="btn btn-outline">← На головну</a>
-          <a href="https://t.me/advokatonipko" target="_blank" class="btn btn-primary">Написати у Telegram</a>
-        </div>
+      const FOOT = `
         <hr class="divider">
         <div class="links">
           <a href="povernennya.html">Умови повернення</a>
           <a href="oferta.html">Публічна оферта</a>
           <a href="privacy.html">Конфіденційність</a>
         </div>
-        <p class="note">АБ «Євгена Оніпка» · ЄДРПОУ 45219345 · м. Полтава</p>
-      `;
-    } else {
-      card.innerHTML = `
-        <div class="icon icon-doc">
-          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-        </div>
-        <h1>Дякуємо за покупку!</h1>
-        <p>Ваш юридичний документ вже надіслано на <span class="highlight">вашу електронну пошту</span>.</p>
-        <p>Перевірте папку «Вхідні» та «Спам», якщо лист не з'явився впродовж кількох хвилин.</p>
-        <p style="margin-top:12px">Якщо виникнуть питання щодо заповнення документа — я готовий проконсультувати особисто.</p>
-        <div class="actions">
+        <p class="note">АБ «Євгена Оніпка» · ЄДРПОУ 45219345 · м. Полтава</p>`;
+      const CONTACT = `<div class="actions">
           <a href="index.html" class="btn btn-outline">← На головну</a>
-          <a href="index.html#contact" class="btn btn-primary">Запитати адвоката</a>
-        </div>
-        <hr class="divider">
-        <div class="links">
-          <a href="povernennya.html">Умови повернення</a>
-          <a href="oferta.html">Публічна оферта</a>
-          <a href="privacy.html">Конфіденційність</a>
-        </div>
-        <p class="note">АБ «Євгена Оніпка» · ЄДРПОУ 45219345 · м. Полтава</p>
-      `;
-    }
+          <a href="https://t.me/advokatonipko" target="_blank" rel="noopener" class="btn btn-primary">Написати у Telegram</a>
+        </div>`;
+      const ICON_OK = '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>';
+      const ICON_PERSON = '<svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
+      const ICON_X = '<svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+
+      function show(html) { card.innerHTML = html + FOOT; }
+
+      function confirmation(title, extra) {
+        const now = new Date().toLocaleString('uk-UA');
+        return `<div class="confirm">
+          <p><strong>Підтвердження замовлення</strong> (збережіть або роздрукуйте цю сторінку)</p>
+          <p>Продавець: Адвокатське бюро «Євгена Оніпка», ЄДРПОУ 45219345, 36011, м. Полтава, вул. Європейська, 18А (для листування); onipko_evgen@ukr.net; +38 050 918 58 70. Претензії приймаються за цими контактами і розглядаються протягом 14 днів.</p>
+          <p>Замовлення: <strong>${esc(title)}</strong>. Номер: ${esc(order)}. Дата перегляду: ${esc(now)}.</p>
+          ${extra}
+          <p>Умови договору — у <a href="oferta.html" target="_blank">Публічній оферті</a> та <a href="povernennya.html" target="_blank">Умовах оплати та повернення</a>, чинних на дату оплати.</p>
+        </div>`;
+      }
+
+      function renderTemplate(info) {
+        const files = info.files.map(f =>
+          `<a class="file-btn" href="/api/download?order=${encodeURIComponent(order)}&f=${f.index}" download>⬇ ${esc(f.name)}</a>`).join('');
+        const delivery = info.manual
+          ? `<p>Оплату підтверджено. Шаблон буде надіслано на email, вказаний під час оплати, <strong>протягом 1 робочого дня</strong>.</p>`
+          : `<p>Оплату підтверджено. Завантажте ваш шаблон:</p>
+          <div class="files">${files}</div>
+          <p style="font-size:13px">Посилання діє 7 днів — збережіть файл на свій пристрій. Якщо файл не завантажується, напишіть нам, і ми надішлемо його на email протягом 1 робочого дня.</p>`;
+        show(`
+          <div class="icon icon-doc">${ICON_OK}</div>
+          <h1>Дякуємо за покупку!</h1>
+          ${delivery}
+          ${confirmation(info.title, `<p>Шаблон надано електронними засобами за вашою згодою до закінчення 14-денного строку, тому відповідно до п. 1 ч. 5 ст. 13 Закону України «Про захист прав споживачів» право розірвати договір у цей строк не застосовується. Право на заміну файлу або повернення коштів у разі дефекту чи невідповідності опису зберігається.</p>`)}
+          <div class="actions">
+            <a href="index.html" class="btn btn-outline">← На головну</a>
+            <button class="btn btn-outline" onclick="window.print()">Зберегти підтвердження</button>
+            <a href="index.html#contact" class="btn btn-primary">Запитати адвоката</a>
+          </div>`);
+      }
+
+      function renderPersonal(info) {
+        show(`
+          <div class="icon icon-consult">${ICON_PERSON}</div>
+          <h1>Оплату отримано!</h1>
+          <p>Замовлення <span class="highlight-terra">${esc(info.title)}</span> оплачено.</p>
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div>Протягом робочого дня я особисто звʼяжуся з вами та перевірю відсутність конфлікту інтересів.</div></div>
+            <div class="step"><div class="step-num">2</div><div>Надішлю договір про надання правничої допомоги для підписання електронним підписом (КЕП або «Дія.Підпис»).</div></div>
+            <div class="step"><div class="step-num">3</div><div>Після підписання договору ви передаєте документи, і я складаю документ у погоджений строк. Якщо договір не буде укладено, кошти повертаються в повному обсязі.</div></div>
+          </div>
+          ${confirmation(info.title, '')}
+          ${CONTACT}`);
+      }
+
+      function renderConsult(title) {
+        show(`
+          <div class="icon icon-consult">${ICON_PERSON}</div>
+          <h1>Оплату отримано!</h1>
+          <p>Консультацію <span class="highlight-terra">оплачено успішно</span>.</p>
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div>Очікуйте дзвінка або повідомлення на вказаний телефон чи email — зазвичай протягом кількох годин у робочий час.</div></div>
+            <div class="step"><div class="step-num">2</div><div>Ми узгодимо зручний час і формат: телефон, відеозвʼязок або особиста зустріч у Полтаві.</div></div>
+            <div class="step"><div class="step-num">3</div><div>Підготуйте наявні документи по справі — це допоможе провести консультацію ефективніше.</div></div>
+          </div>
+          ${order ? confirmation(title, '<p>До початку консультації ви можете відмовитися від неї з поверненням коштів у повному обсязі.</p>') : ''}
+          ${CONTACT}`);
+      }
+
+      function renderWait() {
+        show(`
+          <div class="icon icon-wait"><div class="spinner"></div></div>
+          <h1>Перевіряємо оплату…</h1>
+          <p>Зазвичай це займає кілька секунд. Не закривайте сторінку.</p>`);
+      }
+
+      function renderProblem(title, text) {
+        show(`
+          <div class="icon icon-err">${ICON_X}</div>
+          <h1>${title}</h1>
+          <p>${text}</p>
+          ${order ? `<p style="font-size:13px">Номер замовлення: ${esc(order)}</p>` : ''}
+          ${CONTACT}`);
+      }
+
+      // Старі посилання на сторінку подяки після оплати консультації
+      if (!order && qs.get('type') === 'konsultatsiya') { renderConsult('Юридична консультація'); return; }
+      if (!order) {
+        renderProblem('Замовлення не знайдено', 'Відкрийте цю сторінку за посиланням, на яке вас повернула платіжна система після оплати.');
+        return;
+      }
+
+      renderWait();
+      let tries = 0;
+      async function poll() {
+        tries++;
+        try {
+          const res = await fetch('/api/download?info=1&order=' + encodeURIComponent(order), { cache: 'no-store' });
+          if (res.status === 404) { renderProblem('Замовлення не знайдено', 'Перевірте посилання або звʼяжіться з нами.'); return; }
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          const info = await res.json();
+          if (info.status === 'paid') {
+            if (info.kind === 'template') renderTemplate(info);
+            else if (info.kind === 'consultation') renderConsult(info.title);
+            else renderPersonal(info);
+            return;
+          }
+          if (info.status === 'expired') { renderProblem('Строк дії посилання сплив', 'Напишіть нам — ми повторно надішлемо файл на email, вказаний під час оплати.'); return; }
+          if (info.status === 'failed') { renderProblem('Оплата не пройшла', 'Кошти не списано або платіж скасовано. Спробуйте оформити замовлення ще раз.'); return; }
+        } catch (e) { /* тимчасова помилка — пробуємо ще */ }
+        if (tries < 20) setTimeout(poll, 3000);
+        else renderProblem('Оплату ще не підтверджено', 'Якщо кошти списано, оновіть сторінку за кілька хвилин або напишіть нам — ми надішлемо документ вручну.');
+      }
+      poll();
+    })();
   </script>
 </body>
 </html>

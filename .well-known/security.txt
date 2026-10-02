@@ -1,0 +1,4 @@
+Contact: mailto:onipko_evgen@ukr.net
+Expires: 2027-10-01T00:00:00.000Z
+Preferred-Languages: uk, en
+Canonical: https://www.advokatonipko.com/.well-known/security.txt

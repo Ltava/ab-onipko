@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /dyakuyu.html
 
 Sitemap: https://www.advokatonipko.com/sitemap.xml

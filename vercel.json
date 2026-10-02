@@ -1,81 +1,40 @@
 {
-    "version": 2,
-    "name": "ab-onipko",
-    "builds": [
-        {
-            "src": "*.html",
-            "use": "@vercel/static"
-        },
-        {
-            "src": "assets/**",
-            "use": "@vercel/static"
-        },
-        {
-            "src": "sitemap.xml",
-            "use": "@vercel/static"
-        },
-        {
-            "src": "robots.txt",
-            "use": "@vercel/static"
-        }
-    ],
-    "routes": [
-        {
-            "src": "/(.*)",
-            "continue": true,
-            "headers": {
-                "X-Content-Type-Options": "nosniff",
-                "X-Frame-Options": "SAMEORIGIN",
-                "X-XSS-Protection": "1; mode=block",
-                "Referrer-Policy": "strict-origin-when-cross-origin",
-                "Permissions-Policy": "geolocation=(), microphone=(), camera=()",
-                "Strict-Transport-Security": "max-age=63072000; includeSubDomains; preload",
-                "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://r.jina.ai; frame-ancestors 'self'; base-uri 'self'; form-action 'self' https://www.liqpay.ua"
-            }
-        },
-        {
-            "src": "/poslugy",
-            "dest": "/poslugy.html"
-        },
-        {
-            "src": "/dyakuyu",
-            "dest": "/dyakuyu.html"
-        },
-        {
-            "src": "/oferta",
-            "dest": "/oferta.html"
-        },
-        {
-            "src": "/privacy",
-            "dest": "/privacy.html"
-        },
-        {
-            "src": "/zrazok-pozovu-rozluchennya",
-            "dest": "/zrazok-pozovu-rozluchennya.html"
-        },
-        {
-            "src": "/zrazok-skargy-slidchyi",
-            "dest": "/zrazok-skargy-slidchyi.html"
-        },
-        {
-            "src": "/zrazok-pozovu-borg-rozpyska",
-            "dest": "/zrazok-pozovu-borg-rozpyska.html"
-        },
-        {
-            "src": "/zrazok-spadshchyna",
-            "dest": "/zrazok-spadshchyna.html"
-        },
-        {
-            "src": "/zrazok-styagnennya-borgu-postavka",
-            "dest": "/zrazok-styagnennya-borgu-postavka.html"
-        },
-        {
-            "src": "/zrazok-oskarzhennya-rishennya-vlady",
-            "dest": "/zrazok-oskarzhennya-rishennya-vlady.html"
-        },
-        {
-            "src": "/(.*)",
-            "dest": "/$1"
-        }
-    ]
+  "functions": {
+    "api/download.js": {
+      "includeFiles": "private/docs/**",
+      "maxDuration": 15
+    }
+  },
+  "redirects": [
+    { "source": "/private/:path*", "destination": "/", "permanent": false },
+    { "source": "/assets/docs/:path*", "destination": "/#shop", "permanent": false },
+    { "source": "/api/_lib/:path*", "destination": "/", "permanent": false }
+  ],
+  "rewrites": [
+    { "source": "/poslugy", "destination": "/poslugy.html" },
+    { "source": "/dyakuyu", "destination": "/dyakuyu.html" },
+    { "source": "/oferta", "destination": "/oferta.html" },
+    { "source": "/privacy", "destination": "/privacy.html" },
+    { "source": "/povernennya", "destination": "/povernennya.html" },
+    { "source": "/:slug(zrazok-[a-z0-9-]+)", "destination": "/:slug.html" }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "Permissions-Policy", "value": "geolocation=(), microphone=(), camera=(), payment=()" },
+        { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload" },
+        { "key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://r.jina.ai; frame-ancestors 'self'; base-uri 'self'; object-src 'none'; form-action 'self' https://www.liqpay.ua" }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=604800" }
+      ]
+    }
+  ]
 }

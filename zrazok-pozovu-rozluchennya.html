@@ -6,6 +6,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
   <link rel="shortcut icon" href="/assets/favicon/favicon.ico">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Зразок позовної заяви про розірвання шлюбу 2026 — готовий шаблон | АБ «Євгена Оніпка»</title>
@@ -27,7 +28,7 @@
     "@type": "Offer",
     "url": "https://www.advokatonipko.com/zrazok-pozovu-rozluchennya.html",
     "priceCurrency": "UAH",
-    "price": "600",
+    "price": "349",
     "availability": "https://schema.org/InStock",
     "seller": {"@type": "LegalService", "name": "Адвокатське бюро «Євгена Оніпка»"}
   }
@@ -583,6 +584,14 @@
     .fade-in-2 { animation: fadeInUp 0.6s 0.15s ease both; }
     .fade-in-3 { animation: fadeInUp 0.6s 0.3s ease both; }
     .fade-in-4 { animation: fadeInUp 0.6s 0.45s ease both; }
+
+    .toast.toast-error { background: var(--terra-dark); }
+    .shop-disclaimer { background: #fff; border: 1px solid var(--cream-dark); border-radius: var(--radius); padding: 16px 20px; margin: 0 0 32px; max-width: 900px; }
+    .shop-disclaimer p { font-size: 13px; line-height: 1.7; color: var(--text-muted); margin: 0; }
+    .shop-disclaimer p + p { margin-top: 8px; }
+    .shop-disclaimer strong { color: var(--text); }
+    .hp-field { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+    .form-warn { font-size: 12px; color: var(--text-muted); margin-top: 6px; line-height: 1.5; }
   </style>
   <style>
     .landing-hero { padding: 140px 5% 60px; background: var(--cream); }
@@ -606,26 +615,26 @@
     <span class="nav-name">АБ «Євгена Оніпка»</span>
   </div>
   <div class="nav-links">
-    <a href="#services">Послуги</a>
-    <a href="#about">Про адвоката</a>
-    <a href="#shop" class="nav-shop-link">Документи <span class="nav-badge">Магазин</span></a>
-    <a href="#military">Військовим</a>
-    <a href="#faq">FAQ</a>
-    <a href="#news">Новини</a>
+    <a href="index.html#services">Послуги</a>
+    <a href="index.html#about">Про адвоката</a>
+    <a href="index.html#shop" class="nav-shop-link">Документи <span class="nav-badge">Магазин</span></a>
+    <a href="index.html#military">Військовим</a>
+    <a href="index.html#faq">FAQ</a>
+    <a href="index.html#news">Новини</a>
     <a href="poslugy.html">Практики</a>
-    <a href="#contact" class="nav-cta" onclick="openConsultModal(); return false;">Консультація</a>
+    <a href="index.html#contact" class="nav-cta" onclick="openConsultModal(); return false;">Консультація</a>
   </div>
   <div class="burger" onclick="toggleMenu()">
     <span></span><span></span><span></span>
   </div>
 </nav>
 <div class="mobile-menu" id="mobileMenu">
-  <a href="#services" onclick="toggleMenu()">Послуги</a>
-  <a href="#about" onclick="toggleMenu()">Про адвоката</a>
-  <a href="#shop" onclick="toggleMenu()">Документи <span class="nav-badge">Магазин</span></a>
-  <a href="#military" onclick="toggleMenu()">Військовим</a>
-  <a href="#faq" onclick="toggleMenu()">FAQ</a>
-  <a href="#news" onclick="toggleMenu()">Новини</a>
+  <a href="index.html#services" onclick="toggleMenu()">Послуги</a>
+  <a href="index.html#about" onclick="toggleMenu()">Про адвоката</a>
+  <a href="index.html#shop" onclick="toggleMenu()">Документи <span class="nav-badge">Магазин</span></a>
+  <a href="index.html#military" onclick="toggleMenu()">Військовим</a>
+  <a href="index.html#faq" onclick="toggleMenu()">FAQ</a>
+  <a href="index.html#news" onclick="toggleMenu()">Новини</a>
   <a href="poslugy.html" onclick="toggleMenu()">Практики</a>
   <a href="#" onclick="toggleMenu(); openConsultModal(); return false;">Консультація</a>
 </div>
@@ -681,33 +690,37 @@
 <p>Безкоштовні зразки, які роками копіюються між сайтами, часто не враховують зміни підсудності, актуальну редакцію ЦПК України чи вимоги конкретного суду щодо додатків. Помилка у визначенні підсудності — одна з найчастіших причин повернення позовної заяви без розгляду.</p>
 <p>Шаблон нижче складений і регулярно оновлюється мною особисто, адвокатом Оніпком Євгеном (свідоцтво № 502, Полтавська обласна адвокатська рада). Якщо ваша ситуація складніша за типову — наприклад, є спір про дітей чи майно — краще замовити документ, складений адвокатом особисто під обставини вашої справи.</p>
 </div>
+<div class="landing-wrap" style="padding-top:0"><div class="shop-disclaimer">
+      <p><strong>Важливо перед покупкою.</strong> Шаблони — це типові зразки документів для самостійного заповнення. Вони не є правничою допомогою чи консультацією адвоката і не враховують обставин саме вашої справи. Перед поданням перевірте актуальність норм, розміру судового збору, реквізитів суду і строків на дату подання. Результат розгляду справи залежить від її обставин і доказів, тому ніхто не може його гарантувати. Якщо ваша ситуація нетипова (спір про дітей чи майно, пропущені строки, кримінальне провадження), замовте консультацію або складання документа адвокатом за окремим договором.</p>
+      <p class="shop-disclaimer-meta">Ціни вказано в гривнях, вони остаточні (усі податки включено). Файл .docx завантажується одразу після оплати на сторінці підтвердження замовлення.</p>
+</div></div>
 <div class="landing-product">
 <div class="doc-card doc-card-multi">
         <span class="doc-tag">Сімейне право</span>
         <h3>Позовна заява про розірвання шлюбу</h3>
         <p>Готовий шаблон із підказками для заповнення або документ, складений адвокатом особисто за вашими документами.</p>
         <a href="assets/previews/01-rozluchennya-full.jpg" target="_blank" rel="noopener" class="doc-preview-link">
-          <img src="assets/previews/01-rozluchennya-thumb.jpg" alt="Приклад сторінки шаблону: Позовна заява про розірвання шлюбу" loading="lazy" width="480" height="620">
+          <img src="assets/previews/01-rozluchennya-thumb.jpg" alt="Приклад сторінки шаблону: Позовна заява про розірвання шлюбу" loading="lazy" width="480" height="621">
           <span class="doc-preview-cap">👁 Переглянути приклад сторінки</span>
         </a>
-        <p class="doc-meta-line">📄 3 стор. · формат .docx · з покроковими підказками</p>
+        <p class="doc-meta-line">📄 2 варіанти (стислий і розширений) · формат .docx · з покроковими підказками</p>
         <div class="doc-compare">
-          <div class="doc-compare-row"><b>Готовий шаблон:</b> Сам заповнюєте за покроковими підказками · типова ситуація без спору про дітей і майно · файл одразу на email.</div>
+          <div class="doc-compare-row"><b>Готовий шаблон:</b> Сам заповнюєте за покроковими підказками · типова ситуація без спору про дітей і майно · файл одразу після оплати.</div>
           <div class="doc-compare-row"><b>Адвокат особисто:</b> Аналізую ваші документи особисто · формулювання під обставини саме вашої справи · перевірка відповідності вимогам конкретного суду.</div>
         </div>
         <div class="doc-options">
           <div class="doc-option">
             <div class="doc-option-label">Готовий шаблон</div>
             <div class="doc-footer">
-              <span class="doc-price">600 ₴</span>
-              <button class="doc-buy" onclick="openModal('rozluchennya-shablon', 'Позовна заява про розірвання шлюбу — готовий шаблон', 600, 'Готовий шаблон позовної заяви про розірвання шлюбу з покроковими підказками для заповнення. Відповідає вимогам СК та ЦПК України, містить розрахунок судового збору та порядок подання.', 'Сімейне право · Шаблон', 'assets/docs/01-rozluchennya.docx', true)">Придбати</button>
+              <span class="doc-price">349 ₴</span>
+              <button class="doc-buy" onclick="openModal('rozluchennya-shablon', 'Позовна заява про розірвання шлюбу — готовий шаблон', 349, 'Готовий шаблон позовної заяви про розірвання шлюбу з покроковими підказками для заповнення. У комплекті 2 варіанти: стислий і розширений. Відповідає вимогам СК та ЦПК України, містить розрахунок судового збору та порядок подання.', 'Сімейне право · Шаблон', '', true)">Придбати</button>
             </div>
           </div>
           <div class="doc-option">
             <div class="doc-option-label">Складання адвокатом особисто</div>
             <div class="doc-footer">
               <span class="doc-price">2499 ₴</span>
-              <button class="doc-buy" onclick="openModal('rozluchennya-personal', 'Позовна заява про розірвання шлюбу — складання адвокатом', 2499, 'Позовна заява складається особисто адвокатом індивідуально під вашу справу на основі наданих документів. Враховує вимоги СК та ЦПК України, містить розрахунок судового збору та порядок подання. Без подальшого судового супроводу.', 'Сімейне право · Персонально', 'assets/docs/01-rozluchennya.docx', false)">Замовити</button>
+              <button class="doc-buy" onclick="openModal('rozluchennya-personal', 'Позовна заява про розірвання шлюбу — складання адвокатом', 2499, 'Позовна заява складається особисто адвокатом індивідуально під вашу справу на основі наданих документів. Враховує вимоги СК та ЦПК України, містить розрахунок судового збору та порядок подання. Без подальшого судового супроводу.', 'Сімейне право · Персонально', '', false)">Замовити</button>
             </div>
           </div>
         </div>
@@ -742,7 +755,7 @@
           <li><a href="oferta.html">Публічна оферта</a></li>
           <li><a href="privacy.html">Конфіденційність</a></li>
           <li><a href="povernennya.html">Умови повернення</a></li>
-          <li><a href="#shop">Магазин документів</a></li>
+          <li><a href="index.html#shop">Магазин документів</a></li>
         </ul>
       </div>
     </div>
@@ -759,7 +772,7 @@
   </div>
 </footer>
 <!-- PAYMENT MODAL -->
-<div class="modal-overlay" id="payModal">
+<div class="modal-overlay" id="payModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
   <div class="modal">
     <button class="modal-close" onclick="closeModal()">×</button>
     <div class="modal-title" id="modalTitle"></div>
@@ -781,18 +794,18 @@
         <input type="tel" id="payPhone" placeholder="+380...">
       </div>
       <div class="pay-field">
-        <label for="payTopic">Коротко опишіть ситуацію</label>
+        <label for="payTopic">Коротко опишіть ситуацію</label><p class="form-warn">Не вказуйте медичні діагнози та номери проваджень — уточнимо їх у захищеному каналі.</p>
         <textarea id="payTopic" placeholder="Декілька речень про вашу справу — допоможе підготуватися до консультації..." style="width:100%;padding:12px 14px;border:1.5px solid var(--cream-dark);border-radius:var(--radius);font-family:'Manrope',sans-serif;font-size:14px;outline:none;resize:vertical;min-height:80px"></textarea>
       </div>
     </div>
     <div class="pay-consent">
       <label class="consent-label">
         <input type="checkbox" id="payConsent" required>
-        <span id="consentText">Я ознайомлений(-на) з <a href="povernennya.html" target="_blank">Умовами оплати та повернення коштів</a> і <a href="privacy.html" target="_blank">Політикою конфіденційності</a>, надаю згоду на обробку персональних даних та підтверджую, що з моменту отримання цифрового файлу на електронну пошту я втрачаю право на відмову від договору відповідно до ч. 4 ст. 13 ЗУ «Про захист прав споживачів».</span>
+        <span id="consentText"></span>
       </label>
     </div>
     <button class="btn-pay" id="btnPay" onclick="processPayment()">Оплатити через LiqPay →</button>
-    <p class="pay-secure" id="paySecureText">🔒 Безпечна оплата · Миттєва доставка на email</p>
+    <p class="pay-secure" id="paySecureText">🔒 Безпечна оплата LiqPay</p>
   </div>
 </div>
 
@@ -810,259 +823,7 @@
 
 
 
-<script>
-  // FAQ accordion
-  function toggleFaq(btn) {
-    const item = btn.closest('.faq-item');
-    const isOpen = item.classList.contains('open');
-    document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
-    if (!isOpen) item.classList.add('open');
-  }
-
-  // Mobile menu
-  function toggleMenu() {
-    document.getElementById('mobileMenu').classList.toggle('open');
-  }
-
-  // Modal logic
-  let currentDoc = {};
-
-  function openModal(id, title, price, desc, cat, file, instant) {
-    instant = (instant === undefined) ? true : instant;
-    currentDoc = { id, title, price, desc, cat, file, type: 'doc' };
-    document.getElementById('modalTitle').textContent = title;
-    document.getElementById('modalCat').textContent = cat;
-    document.getElementById('modalPrice').textContent = price + ' ₴';
-    document.getElementById('modalDesc').textContent = desc;
-    document.getElementById('payEmailLabel').textContent = instant ? 'Email для отримання документа' : 'Email для зв\'язку та надсилання документа';
-    document.getElementById('consultExtra').style.display = 'none';
-    document.getElementById('payPhone').removeAttribute('required');
-    document.getElementById('btnPay').textContent = 'Оплатити через LiqPay →';
-    document.getElementById('paySecureText').textContent = instant
-      ? '🔒 Безпечна оплата · Миттєва доставка на email'
-      : '🔒 Безпечна оплата · Адвокат особисто звʼяжеться для уточнення деталей справи';
-    document.getElementById('consentText').innerHTML = instant
-      ? 'Я ознайомлений(-на) з <a href="povernennya.html" target="_blank">Умовами оплати та повернення коштів</a> і <a href="privacy.html" target="_blank">Політикою конфіденційності</a>, надаю згоду на обробку персональних даних та підтверджую, що з моменту отримання цифрового файлу на електронну пошту я втрачаю право на відмову від договору відповідно до ч. 4 ст. 13 ЗУ «Про захист прав споживачів».'
-      : 'Я ознайомлений(-на) з <a href="povernennya.html" target="_blank">Умовами оплати та повернення коштів</a> і <a href="privacy.html" target="_blank">Політикою конфіденційності</a>, надаю згоду на обробку персональних даних та розумію, що документ складається індивідуально адвокатом за моїми документами і надсилається на email після підготовки.';
-    document.getElementById('payConsent').checked = false;
-    document.getElementById('payEmail').value = '';
-    document.getElementById('payName').value = '';
-    document.getElementById('payModal').classList.add('active');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function openConsultModal() {
-    currentDoc = {
-      id: 'konsultatsiya',
-      title: 'Юридична консультація',
-      price: 1000,
-      desc: 'Особиста консультація з адвокатом Оніпком Євгеном. Телефоном, онлайн або з виїздом у зручне для вас місце в Полтаві. Після оплати я особисто зв\'яжуся з вами для погодження часу та формату.',
-      cat: 'Консультація з адвокатом · 1 год',
-      file: '',
-      type: 'consultation'
-    };
-    document.getElementById('modalTitle').textContent = currentDoc.title;
-    document.getElementById('modalCat').textContent = currentDoc.cat;
-    document.getElementById('modalPrice').textContent = '1000 ₴';
-    document.getElementById('modalDesc').textContent = currentDoc.desc;
-    document.getElementById('payEmailLabel').textContent = 'Email для підтвердження';
-    document.getElementById('consultExtra').style.display = 'block';
-    document.getElementById('payPhone').setAttribute('required', '');
-    document.getElementById('btnPay').textContent = 'Оплатити консультацію — 1000 ₴';
-    document.getElementById('paySecureText').textContent = '🔒 Безпечна оплата · Зв\'яжусь особисто після підтвердження';
-    document.getElementById('consentText').innerHTML = 'Я ознайомлений(-на) з <a href="povernennya.html" target="_blank">Умовами оплати та повернення коштів</a> і <a href="privacy.html" target="_blank">Політикою конфіденційності</a>, надаю згоду на обробку персональних даних. Розумію, що консультація є платною послугою вартістю 1000,00 грн.';
-    document.getElementById('payConsent').checked = false;
-    document.getElementById('payEmail').value = '';
-    document.getElementById('payName').value = '';
-    document.getElementById('payPhone').value = '';
-    document.getElementById('payTopic').value = '';
-    document.getElementById('payModal').classList.add('active');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeModal() {
-    document.getElementById('payModal').classList.remove('active');
-    document.body.style.overflow = '';
-  }
-  document.getElementById('payModal').addEventListener('click', function(e) {
-    if (e.target === this) closeModal();
-  });
-
-  // LiqPay payment — підпис рахунку рахується НА СЕРВЕРІ (/api/liqpay-sign),
-  // приватний ключ LiqPay більше ніде в браузері не зберігається.
-  async function processPayment() {
-    const email   = document.getElementById('payEmail').value.trim();
-    const name    = document.getElementById('payName').value.trim();
-    const consent = document.getElementById('payConsent').checked;
-    const isConsult = currentDoc.type === 'consultation';
-    const phone   = isConsult ? document.getElementById('payPhone').value.trim() : '';
-    const topic   = isConsult ? document.getElementById('payTopic').value.trim() : '';
-
-    if (!email) { alert('Будь ласка, вкажіть email'); return; }
-    if (isConsult && !phone) { alert('Будь ласка, вкажіть номер телефону'); return; }
-    if (!consent) {
-      alert('Будь ласка, підтвердіть ознайомлення з умовами та Політикою конфіденційності.');
-      return;
-    }
-
-    const amount      = currentDoc.price;
-    const description = 'АБ Оніпка: ' + currentDoc.title + (isConsult && phone ? ' | ' + phone : '');
-    const order_id    = (isConsult ? 'consult_' : 'doc_') + currentDoc.id + '_' + Date.now();
-    const base        = window.location.origin + window.location.pathname.replace('index.html','');
-    const result_url  = base + (isConsult ? 'dyakuyu.html?type=konsultatsiya' : 'dyakuyu.html');
-
-    const payBtn = document.getElementById('btnPay');
-    if (payBtn) payBtn.disabled = true;
-
-    try {
-      // Нотифікація про оплату консультації — теж через сервер (без BOT_TOKEN у браузері)
-      if (isConsult) {
-        fetch('/api/notify-telegram', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ kind: 'payment', name, phone, email, topic, amount })
-        }).catch(() => {});
-      }
-
-      const signRes = await fetch('/api/liqpay-sign', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          amount, description, order_id,
-          customer_user_id: email, result_url
-        })
-      });
-
-      if (!signRes.ok) throw new Error('sign request failed');
-      const { data, signature } = await signRes.json();
-
-      const form = document.createElement('form');
-      form.method = 'POST';
-      form.action = 'https://www.liqpay.ua/api/3/checkout';
-      form.target = '_blank';
-      ['data', 'signature'].forEach((n, i) => {
-        const inp = document.createElement('input');
-        inp.type = 'hidden'; inp.name = n;
-        inp.value = i === 0 ? data : signature;
-        form.appendChild(inp);
-      });
-      document.body.appendChild(form);
-      form.submit();
-      document.body.removeChild(form);
-      closeModal();
-    } catch (err) {
-      alert('Не вдалося ініціювати оплату. Спробуйте ще раз або зв\'яжіться напряму.');
-    } finally {
-      if (payBtn) payBtn.disabled = false;
-    }
-  }
-
-  // Contact form submit
-  async function submitForm(e) {
-    e.preventDefault();
-    const form = e.target;
-    const data = {
-      name: form.name.value,
-      phone: form.phone.value,
-      email: form.email.value,
-      practice: form.practice.value,
-      message: form.message.value
-    };
-
-    // Telegram-нотифікація — тепер шлеться через сервер (/api/notify-telegram),
-    // BOT_TOKEN у браузері більше не зберігається.
-    try {
-      await fetch('/api/notify-telegram', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          kind: 'contact',
-          name: data.name, phone: data.phone, email: data.email,
-          practice: data.practice, message: data.message
-        })
-      });
-    } catch (err) { console.log('Telegram notification error:', err); }
-
-    form.reset();
-    showToast('✓ Запит надіслано! Я зв\'яжуся з вами найближчим часом.');
-  }
-
-  // Toast
-  function showToast(msg) {
-    const toast = document.getElementById('toast');
-    document.getElementById('toastMsg').textContent = msg;
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 4000);
-  }
-
-  // Smooth nav scroll highlight
-  const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.nav-links a');
-  window.addEventListener('scroll', () => {
-    let current = '';
-    sections.forEach(s => {
-      if (window.scrollY >= s.offsetTop - 100) current = s.id;
-    });
-    navLinks.forEach(a => {
-      a.style.color = a.getAttribute('href') === '#' + current ? 'white' : '';
-    });
-  });
-
-  // NEWS WIDGETS — завантаження заголовків через публічний reader-проксі (CORS-friendly)
-  function escapeHtml(str) {
-    return str.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  }
-
-  // Перевіряє, що рядок — справжній абсолютний http(s) URL (захист від "javascript:"
-  // та від розриву атрибута href через лапки/незвичні символи у відповіді проксі).
-  function safeHttpUrl(str) {
-    try {
-      const u = new URL(str);
-      if (u.protocol !== 'http:' && u.protocol !== 'https:') return null;
-      return u.href;
-    } catch (e) {
-      return null;
-    }
-  }
-
-  async function loadNews(sourceUrl, listId, limit = 5) {
-    const list = document.getElementById(listId);
-    try {
-      const res = await fetch('https://r.jina.ai/' + sourceUrl);
-      if (!res.ok) throw new Error('HTTP ' + res.status);
-      const text = await res.text();
-      const lines = text.split('\n');
-      const items = [];
-      const re = /^#{2,4}\s*\[([^\]]{8,200})\]\((https?:\/\/[^\)]+)\)/;
-      for (let i = 0; i < lines.length && items.length < limit; i++) {
-        const m = lines[i].match(re);
-        if (!m) continue;
-        const title = m[1].trim();
-        const url = safeHttpUrl(m[2].trim());
-        if (!url) continue;
-        if (items.some(it => it.url === url)) continue;
-        let date = '';
-        for (let j = i + 1; j <= i + 3 && j < lines.length; j++) {
-          const dm = lines[j].match(/\d{1,2}:\d{2},?\s*\d{1,2}\s+\S+\s+\d{4}/);
-          if (dm) { date = dm[0]; break; }
-        }
-        items.push({ title, url, date });
-      }
-      if (!items.length) throw new Error('empty');
-      list.innerHTML = items.map(it => `
-        <li class="news-item">
-          <a href="${escapeHtml(it.url)}" target="_blank" rel="noopener">${escapeHtml(it.title)}</a>
-          ${it.date ? `<span class="news-date">${escapeHtml(it.date)}</span>` : ''}
-        </li>
-      `).join('');
-    } catch (err) {
-      list.innerHTML = `<li class="news-error">Не вдалося завантажити стрічку новин. <a href="${escapeHtml(sourceUrl)}" target="_blank" rel="noopener">Перейти на джерело →</a></li>`;
-    }
-  }
-
-  loadNews('https://sud.ua/uk/news', 'newsListGeneral');
-  loadNews('https://sud.ua/uk/news/verhovniy-sud', 'newsListVS');
-</script>
+<script src="assets/js/shop.js"></script>
 
 </body>
 </html>
