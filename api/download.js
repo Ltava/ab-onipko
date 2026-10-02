@@ -47,6 +47,20 @@ module.exports = async (req, res) => {
     return;
   }
 
+  // Самоперевірка ключа: розшифровує всі шаблони й повідомляє лише результат (файли не віддаються).
+  if (req.query.selftest) {
+    if (!docsKeyConfigured()) {
+      res.status(200).json({ ok: false, reason: 'DOCS_KEY not configured' });
+      return;
+    }
+    const ids = [...new Set(Object.values(catalog).flatMap(p => (p.files || []).map(f => f.id)))];
+    const failed = ids.filter(id => {
+      try { return decryptDoc(id).subarray(0, 2).toString() !== 'PK'; } catch (e) { return true; }
+    });
+    res.status(200).json({ ok: failed.length === 0, checked: ids.length, failed });
+    return;
+  }
+
   const orderId = String(req.query.order || '');
   const order = parseOrder(orderId);
   const product = order && catalog[order.productId];
