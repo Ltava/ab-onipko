@@ -154,7 +154,9 @@
   };
 
   window.toggleMenu = function () {
-    $('mobileMenu').classList.toggle('open');
+    const open = $('mobileMenu').classList.toggle('open');
+    const b = document.querySelector('.burger');
+    if (b) b.setAttribute('aria-expanded', open ? 'true' : 'false');
   };
 
   document.addEventListener('DOMContentLoaded', function () {
