@@ -131,6 +131,99 @@
 
   function round2(x) { return Math.round((x + Number.EPSILON) * 100) / 100; }
 
+  // ── Борг з частковими оплатами: 3% річних та інфляційні втрати (ч. 2 ст. 625 ЦК) ──
+  // Методика (визначена адвокатом бюро):
+  //   • часткові оплати зменшують основний борг; кожен період між оплатами рахується окремо
+  //     від свого залишку боргу;
+  //   • день оплати до періоду прострочення не входить (період закінчується напередодні);
+  //   • інфляційні нараховуються лише за повні календарні місяці всередині періоду,
+  //     враховуються всі такі місяці, зокрема з дефляцією; від'ємний результат = 0.
+
+  // Періоди незмінного залишку боргу. first — перший день прострочення, last — останній (включно).
+  function debtPeriods(amount, first, last, payments) {
+    const pays = (payments || []).filter((p) => p && p.amount > 0 && parse(p.date) !== null)
+      .slice().sort((a, b) => parse(a.date) - parse(b.date));
+    let balance = amount;
+    let cur = first;
+    const periods = [];
+    for (const p of pays) {
+      if (parse(p.date) > parse(last)) break;
+      if (parse(p.date) > parse(cur) && balance > 0) {
+        periods.push({ from: cur, to: addDays(p.date, -1), balance: round2(balance) });
+      }
+      balance = Math.max(0, round2(balance - p.amount));
+      if (parse(p.date) >= parse(cur)) cur = p.date;
+    }
+    if (balance > 0 && parse(cur) <= parse(last)) periods.push({ from: cur, to: last, balance: round2(balance) });
+    return periods;
+  }
+
+  // Повні календарні місяці, що цілком лежать у [from, to]: ['2026-01', ...]
+  function fullMonths(from, to) {
+    const out = [];
+    const f = new Date(parse(from)), t = parse(to);
+    let y = f.getUTCFullYear(), m = f.getUTCMonth();
+    if (f.getUTCDate() !== 1) { m += 1; if (m > 11) { m = 0; y += 1; } }
+    for (;;) {
+      const lastDay = Date.UTC(y, m + 1, 0);
+      if (lastDay > t) break;
+      out.push(y + '-' + String(m + 1).padStart(2, '0'));
+      m += 1; if (m > 11) { m = 0; y += 1; }
+    }
+    return out;
+  }
+
+  // Інфляційні втрати за списком місяців. indices: { 'YYYY-MM': 100.4, ... } — ІСЦ до попереднього місяця.
+  function inflationLoss(balance, months, indices) {
+    const used = months.filter((k) => indices && typeof indices[k] === 'number');
+    const missing = months.filter((k) => !(indices && typeof indices[k] === 'number'));
+    let factor = 1;
+    for (const k of used) factor *= indices[k] / 100;
+    return {
+      used, missing,
+      cumIndex: Math.round(factor * 100 * 1000) / 1000, // %, 3 знаки
+      loss: used.length ? round2(Math.max(0, balance * (factor - 1))) : 0
+    };
+  }
+
+  // opts: { amount, due, to, payments, creditExemption, indices }
+  function debtClaim(opts) {
+    const amount = Number(opts.amount);
+    if (!(amount > 0)) throw new Error('Вкажіть суму боргу');
+    if (parse(opts.due) === null || parse(opts.to) === null) throw new Error('Вкажіть дати');
+    const first = addDays(opts.due, 1);
+    if (parse(opts.to) < parse(first)) throw new Error('Дата розрахунку має бути пізнішою за останній день виконання зобов’язання');
+    let last = opts.to;
+    let excludedDays = 0;
+    if (opts.creditExemption && parse(opts.to) >= parse(MARTIAL_LAW_START)) {
+      const from = parse(first) > parse(MARTIAL_LAW_START) ? first : MARTIAL_LAW_START;
+      excludedDays = diffDays(from, opts.to) + 1;
+      last = addDays(MARTIAL_LAW_START, -1);
+    }
+    const periods = parse(last) < parse(first) ? [] : debtPeriods(amount, first, last, opts.payments);
+    let total3 = 0, totalInfl = 0;
+    const missingAll = new Set();
+    const rows = periods.map((p) => {
+      const tp = threePercent(p.balance, p.from, p.to);
+      const months = fullMonths(p.from, p.to);
+      const inf = inflationLoss(p.balance, months, opts.indices);
+      inf.missing.forEach((m) => missingAll.add(m));
+      total3 += tp.total;
+      totalInfl += inf.loss;
+      return Object.assign({}, p, { days: tp.days, threePct: tp.total, months, cumIndex: inf.cumIndex, inflation: inf.loss, missing: inf.missing, usedMonths: inf.used.length });
+    });
+    const paid = (opts.payments || []).filter((x) => x && x.amount > 0 && parse(x.date) !== null && parse(x.date) <= parse(opts.to))
+      .reduce((s, x) => s + x.amount, 0);
+    return {
+      rows,
+      total3: round2(total3),
+      totalInflation: round2(totalInfl),
+      remaining: round2(Math.max(0, amount - paid)),
+      excludedDays,
+      missingMonths: Array.from(missingAll).sort()
+    };
+  }
+
   // ── Строк прийняття спадщини (ст. 1270 ЦК, п. 20 розд. «Прикінцеві та перехідні положення») ──
   // opts.registrationDate — дата державної реєстрації смерті. Якщо смерть зареєстровано пізніше
   //   ніж через один місяць після смерті, строки під час воєнного стану обчислюються з дня реєстрації.
@@ -260,7 +353,8 @@
   const Lib = {
     PM, PM_LATEST_YEAR, MARTIAL_LAW_START, HOLIDAYS, FEE_RULES,
     parse, fmt, addDays, addMonths, isWeekend, holiday, diffDays, human, today,
-    term, threePercent, inheritance, courtFee, round2, fmtMoney, ics, googleCalendarUrl
+    term, threePercent, inheritance, courtFee, round2, fmtMoney, ics, googleCalendarUrl,
+    debtPeriods, fullMonths, inflationLoss, debtClaim
   };
 
   if (typeof module !== 'undefined' && module.exports) module.exports = Lib;

@@ -125,6 +125,86 @@ t('Посилання Google Календаря коректне', () => {
   assert.ok(u.includes('dates=20261012/20261013'));
 });
 
+// ── Інфляційні втрати та часткові оплати ────────────────────────────
+const IDX = { '2026-01': 100.7, '2026-02': 101, '2026-03': 101.7, '2026-04': 101.4, '2026-05': 100.9, '2026-06': 99.9, '2026-07': 100.3 };
+t('Повні місяці: 15.01–10.04 → лютий, березень', () => assert.deepStrictEqual(L.fullMonths('2026-01-15', '2026-04-10'), ['2026-02', '2026-03']));
+t('Повні місяці: 01.01–31.03 → січень–березень', () => assert.deepStrictEqual(L.fullMonths('2026-01-01', '2026-03-31'), ['2026-01', '2026-02', '2026-03']));
+t('Повні місяці: менше місяця → жодного', () => assert.deepStrictEqual(L.fullMonths('2026-02-02', '2026-03-01'), []));
+t('Повні місяці: через рік', () => assert.deepStrictEqual(L.fullMonths('2025-12-01', '2026-01-31'), ['2025-12', '2026-01']));
+t('Інфляційні: 10 000 × (1,007×1,01×1,017 − 1) = 343,60', () => {
+  const r = L.inflationLoss(10000, ['2026-01', '2026-02', '2026-03'], IDX);
+  assert.strictEqual(r.loss, 343.6);
+  assert.strictEqual(r.cumIndex, 103.436);
+});
+t('Інфляційні: дефляційний місяць враховується', () => {
+  const r = L.inflationLoss(10000, ['2026-06', '2026-07'], IDX); // 0,999 × 1,003 = 1,001997
+  assert.strictEqual(r.loss, 19.97);
+});
+t('Інфляційні: лише дефляція → 0, не мінус', () => assert.strictEqual(L.inflationLoss(10000, ['2026-06'], IDX).loss, 0));
+t('Інфляційні: місяць без індексу позначається як відсутній', () => {
+  const r = L.inflationLoss(10000, ['2026-07', '2026-08'], IDX);
+  assert.deepStrictEqual(r.missing, ['2026-08']);
+});
+t('Періоди: без оплат — один період', () => {
+  assert.deepStrictEqual(L.debtPeriods(1000, '2026-01-01', '2026-03-31', []), [{ from: '2026-01-01', to: '2026-03-31', balance: 1000 }]);
+});
+t('Періоди: часткова оплата ділить строк, день оплати — у новому періоді', () => {
+  const p = L.debtPeriods(1000, '2026-01-01', '2026-03-31', [{ date: '2026-02-10', amount: 400 }]);
+  assert.deepStrictEqual(p, [
+    { from: '2026-01-01', to: '2026-02-09', balance: 1000 },
+    { from: '2026-02-10', to: '2026-03-31', balance: 600 }
+  ]);
+});
+t('Періоди: оплата до початку прострочення зменшує борг', () => {
+  const p = L.debtPeriods(1000, '2026-01-01', '2026-01-31', [{ date: '2025-12-20', amount: 300 }]);
+  assert.deepStrictEqual(p, [{ from: '2026-01-01', to: '2026-01-31', balance: 700 }]);
+});
+t('Періоди: повне погашення завершує нарахування', () => {
+  const p = L.debtPeriods(1000, '2026-01-01', '2026-06-30', [{ date: '2026-03-01', amount: 1000 }]);
+  assert.strictEqual(p.length, 1);
+  assert.strictEqual(p[0].to, '2026-02-28');
+});
+t('debtClaim: два періоди, 3% і інфляційні окремо', () => {
+  const r = L.debtClaim({ amount: 10000, due: '2025-12-31', to: '2026-04-30', payments: [{ date: '2026-03-01', amount: 4000 }], indices: IDX });
+  assert.strictEqual(r.rows.length, 2);
+  // Період 1: 01.01–28.02, 10 000, повні місяці січень, лютий: 1,007×1,01 = 1,01707 → 170,70
+  assert.deepStrictEqual(r.rows[0].months, ['2026-01', '2026-02']);
+  assert.strictEqual(r.rows[0].inflation, 170.7);
+  // Період 2: 01.03–30.04, 6 000, березень, квітень: 1,017×1,014 = 1,031238 → 187,43
+  assert.strictEqual(r.rows[1].inflation, 187.43);
+  assert.strictEqual(r.totalInflation, 358.13);
+  // 3%: 10 000×0,03×59/365 = 48,49; 6 000×0,03×61/365 = 30,08
+  assert.strictEqual(r.total3, 78.57);
+  assert.strictEqual(r.remaining, 6000);
+});
+t('debtClaim: позика — інфляційні та 3% з 24.02.2022 не нараховуються', () => {
+  const r = L.debtClaim({ amount: 10000, due: '2023-01-31', to: '2026-04-30', creditExemption: true, indices: IDX });
+  assert.strictEqual(r.rows.length, 0);
+  assert.strictEqual(r.totalInflation, 0);
+  assert.ok(r.excludedDays > 1000);
+});
+t('Офіційний ряд Держстату: 2022 рік = 26,6%, 2024 = 12,0%', () => {
+  const idx = require('../assets/data/cpi.json').indices;
+  const y = (yr) => { let p = 1; for (let m = 1; m <= 12; m++) p *= idx[yr + '-' + String(m).padStart(2, '0')] / 100; return Math.round((p - 1) * 1000) / 10; };
+  assert.strictEqual(y(2022), 26.6);
+  assert.strictEqual(y(2024), 12);
+});
+t('Перевірка ряду: розрив і неправдоподібне значення відхиляються', () => {
+  const cpi = require('../api/_lib/cpi');
+  const good = require('../assets/data/cpi.json');
+  assert.strictEqual(cpi.validate(good.indices, good).ok, true);
+  const gap = Object.assign({}, good.indices); delete gap['2010-05'];
+  assert.strictEqual(cpi.validate(gap, good).ok, false);
+  const bad = Object.assign({}, good.indices, { '2026-08': 1001 });
+  assert.strictEqual(cpi.validate(bad, good).ok, false);
+});
+t('Розбір SDMX-JSON Держстату', () => {
+  const cpi = require('../api/_lib/cpi');
+  const sample = { data: { structures: [{ dimensions: { observation: [{ id: 'TIME_PERIOD', values: [{ value: '2026-M07' }, { value: '2026-M08' }] }] } }],
+    dataSets: [{ series: { '0:0:0:0:0': { observations: { '0': ['100.3'], '1': ['100.1'] } } } }] } };
+  assert.deepStrictEqual(cpi.parseSdmx(sample), { '2026-07': 100.3, '2026-08': 100.1 });
+});
+
 // ── Ціни в пропозиціях калькуляторів збігаються з серверним каталогом ──
 t('Ціни в instrumenty-ui.js = ціни в api/_lib/catalog.js', () => {
   const fs = require('fs');

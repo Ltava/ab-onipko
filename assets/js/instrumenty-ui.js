@@ -250,43 +250,95 @@
     });
   }
 
-  // ── 4. 3% річних ──
+  // ── 4. 3% річних та інфляційні втрати ──
+  // Індекси інфляції: /api/cpi (офіційний API Держстату, кеш сайту), запасний варіант — assets/data/cpi.json.
+  let cpiPromise = null;
+  function loadCpi() {
+    if (!cpiPromise) {
+      cpiPromise = fetch('/api/cpi').then((r) => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+        .catch(() => fetch('assets/data/cpi.json').then((r) => r.json()).then((j) => Object.assign(j, { live: false })))
+        .catch(() => null);
+    }
+    return cpiPromise;
+  }
+  const MONTHS_NOM = ['січень', 'лютий', 'березень', 'квітень', 'травень', 'червень', 'липень', 'серпень', 'вересень', 'жовтень', 'листопад', 'грудень'];
+  const ym = (k) => MONTHS_NOM[Number(k.slice(5)) - 1] + ' ' + k.slice(0, 4);
+  const dmy = (d) => d.split('-').reverse().join('.');
+  const num = (v) => Number(String(v || '').replace(/\s/g, '').replace(',', '.'));
+
   function initThreePercent() {
-    const form = $('calcForm'), box = $('result');
+    const form = $('calcForm'), box = $('result'), list = $('payments'), srcNote = $('cpiSource');
     $('to').value = L.today();
-    form.addEventListener('submit', (e) => {
+    loadCpi().then((c) => {
+      srcNote.textContent = c
+        ? 'Індекси інфляції: Державна служба статистики України (stat.gov.ua, ліцензія CC BY 4.0). Останній опублікований місяць — ' + ym(c.latest) + '.'
+        : 'Не вдалося завантажити індекси інфляції — буде розраховано лише 3% річних.';
+    });
+    function addRow() {
+      const row = document.createElement('div');
+      row.className = 'pay-row';
+      row.innerHTML = '<input type="date" aria-label="Дата оплати" class="pay-date">' +
+        '<input type="number" min="0.01" step="0.01" inputmode="decimal" aria-label="Сума оплати, ₴" placeholder="Сума, ₴" class="pay-sum">' +
+        '<button type="button" class="pay-del" aria-label="Видалити оплату">✕</button>';
+      row.querySelector('.pay-del').addEventListener('click', () => row.remove());
+      list.appendChild(row);
+      row.querySelector('.pay-date').focus();
+    }
+    $('addPayment').addEventListener('click', addRow);
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const amount = Number(String($('amount').value).replace(/\s/g, '').replace(',', '.'));
+      const amount = num($('amount').value);
       const due = $('due').value, to = $('to').value;
       if (!(amount > 0)) return err(box, 'Вкажіть суму боргу.');
       if (!L.parse(due) || !L.parse(to)) return err(box, 'Вкажіть обидві дати.');
-      const from = L.addDays(due, 1);
-      if (L.parse(to) < L.parse(from)) return err(box, 'Дата розрахунку має бути пізнішою за останній день виконання зобов’язання.');
-      const credit = form.kind.value === 'credit';
-      let r;
-      try { r = L.threePercent(amount, from, to, { creditExemption: credit }); } catch (ex) { return err(box, ex.message); }
-      let html = '<div class="result-main" role="status"><div class="k">3% річних</div><div class="v">' + esc(money(r.total)) + '</div>' +
-        '<div class="s">За ' + r.days + ' ' + daysWord(r.days) + ' прострочення · борг ' + esc(money(amount)) + '</div></div>';
-      if (r.rows.length) {
-        html += '<table class="table"><thead><tr><th>Період</th><th>Днів</th><th>Днів у році</th><th>Сума</th></tr></thead><tbody>' +
-          r.rows.map((x) => '<tr><td>' + x.from.split('-').reverse().join('.') + ' – ' + x.to.split('-').reverse().join('.') +
-            '</td><td class="num">' + x.days + '</td><td class="num">' + x.yearDays + '</td><td class="num">' + esc(money(x.sum)) + '</td></tr>').join('') +
-          '</tbody></table>';
+      const payments = [];
+      for (const row of list.querySelectorAll('.pay-row')) {
+        const d = row.querySelector('.pay-date').value, a = num(row.querySelector('.pay-sum').value);
+        if (!d && !a) continue;
+        if (!L.parse(d) || !(a > 0)) return err(box, 'Перевірте часткові оплати: для кожної потрібні дата і сума.');
+        payments.push({ date: d, amount: a });
       }
-      html += '<ul class="facts"><li><span>Формула</span><span>сума × 3% × дні прострочення ÷ дні в році</span></li>' +
-        '<li><span>Перший день прострочення</span><span>' + esc(L.human(from)) + '</span></li></ul>';
+      const credit = form.kind.value === 'credit';
+      const c = await loadCpi();
+      let r;
+      try { r = L.debtClaim({ amount, due, to, payments, creditExemption: credit, indices: c ? c.indices : null }); }
+      catch (ex) { return err(box, ex.message); }
+      const total = L.round2(r.total3 + r.totalInflation);
+      let html = '<div class="result-main" role="status"><div class="k">3% річних та інфляційні втрати</div>' +
+        '<div class="v">' + esc(money(total)) + '</div>' +
+        '<div class="s">3% річних: ' + esc(money(r.total3)) + ' · інфляційні: ' + esc(c ? money(r.totalInflation) : 'не розраховано') +
+        ' · залишок основного боргу: ' + esc(money(r.remaining)) + '</div></div>';
+      if (r.rows.length) {
+        html += '<div class="table-scroll"><table class="table"><thead><tr><th>Період прострочення</th><th>Борг у періоді</th><th>Днів</th><th>3% річних</th>' +
+          '<th>Повні місяці</th><th>Індекс за місяці</th><th>Інфляційні</th></tr></thead><tbody>' +
+          r.rows.map((x) => '<tr><td>' + dmy(x.from) + ' – ' + dmy(x.to) + '</td><td class="num">' + esc(money(x.balance)) + '</td>' +
+            '<td class="num">' + x.days + '</td><td class="num">' + esc(money(x.threePct)) + '</td>' +
+            '<td>' + (x.months.length ? esc(ym(x.months[0]) + (x.months.length > 1 ? ' – ' + ym(x.months[x.months.length - 1]) : '')) + ' (' + x.months.length + ')' : '—') + '</td>' +
+            '<td class="num">' + (x.usedMonths ? String(x.cumIndex).replace('.', ',') + '%' : '—') + '</td>' +
+            '<td class="num">' + esc(money(x.inflation)) + '</td></tr>').join('') +
+          '</tbody></table></div>';
+      }
+      html += '<ul class="facts"><li><span>3% річних</span><span>борг у періоді × 3% × дні ÷ дні в році</span></li>' +
+        '<li><span>Інфляційні</span><span>борг у періоді × (добуток індексів за повні місяці − 1)</span></li>' +
+        '<li><span>Перший день прострочення</span><span>' + esc(L.human(L.addDays(due, 1))) + '</span></li></ul>';
       if (credit && r.excludedDays > 0) {
-        html += note('warn', '<strong>Не нараховано ' + r.excludedDays + ' ' + daysWord(r.excludedDays) + ' — з 24.02.2022.</strong> ' +
+        html += note('warn', '<strong>Не нараховано за ' + r.excludedDays + ' ' + daysWord(r.excludedDays) + ' — з 24.02.2022.</strong> ' +
           'За п. 18 розд. «Прикінцеві та перехідні положення» ЦК під час воєнного стану та 30 днів після нього позичальник за кредитом ' +
           'чи позикою звільняється від відповідальності за ст. 625 ЦК (3% річних та інфляційні) і від неустойки. За буквальним змістом ' +
           'норма охоплює будь-яку позику, зокрема за розпискою між фізичними особами. Чи можна стягнути більше у вашому випадку — ' +
           'питання до адвоката.');
       }
-      html += note('warn', '<strong>Інфляційні втрати калькулятор не рахує.</strong> Для них потрібні офіційні індекси споживчих цін ' +
-        'Держстату за кожен місяць прострочення і правила округлення неповних місяців, щодо яких практика неоднакова. Суму інфляційних ' +
-        'адвокат розрахує під час підготовки позову.');
-      html += note('ok', 'Якщо борг уже погашено, вкажіть як дату розрахунку день, що передує дню оплати. Часткові оплати ' +
-        'зменшують суму, на яку нараховуються проценти, — у такому разі розрахунок робиться окремо за кожний період.');
+      if (r.missingMonths.length) {
+        html += note('warn', '<strong>Індекс ще не опубліковано за: ' + esc(r.missingMonths.map(ym).join(', ')) + '.</strong> ' +
+          'Держстат публікує індекс за місяць приблизно 9–10 числа наступного місяця. Ці місяці не враховано в інфляційних.');
+      }
+      if (!c) html += note('danger', 'Не вдалося завантажити індекси інфляції — інфляційні втрати не розраховано. Спробуйте пізніше.');
+      html += note('ok', '<strong>Як рахуємо.</strong> Часткові оплати зменшують основний борг, і кожен період між оплатами рахується окремо. ' +
+        'День оплати до періоду прострочення не входить. Інфляційні нараховуються лише за повні календарні місяці прострочення в кожному ' +
+        'періоді — враховуються всі такі місяці, зокрема з дефляцією; якщо загальний індекс за період нижчий за 100%, інфляційні = 0. ' +
+        'Якщо договором чи ст. 534 ЦК передбачено іншу черговість погашення (спершу проценти, неустойка), результат буде іншим.');
+      if (c) html += '<p class="disclaimer" style="margin-top:8px">Індекси споживчих цін: Державна служба статистики України, stat.gov.ua, ' +
+        'ліцензія CC BY 4.0. Дані станом на ' + esc(ym(c.latest)) + (c.live === false ? ' (резервна копія)' : '') + '.</p>';
       html += offersHtml(form.kind.value === 'supply' ? ['postavka-shablon', 'konsultatsiya'] : ['borg-shablon', 'borg-personal', 'konsultatsiya'],
         'Стягнути борг через суд', 'Позов з розрахунком 3% річних та інфляційних, судового збору і порядком подання.');
       show(box, html);

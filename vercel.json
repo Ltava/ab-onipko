@@ -3,38 +3,98 @@
     "api/download.js": {
       "includeFiles": "private/docs/**",
       "maxDuration": 15
+    },
+    "api/cpi-check.js": {
+      "maxDuration": 30
     }
   },
   "redirects": [
-    { "source": "/private/:path*", "destination": "/", "permanent": false },
-    { "source": "/assets/docs/:path*", "destination": "/#shop", "permanent": false },
-    { "source": "/api/_lib/:path*", "destination": "/", "permanent": false }
+    {
+      "source": "/private/:path*",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/assets/docs/:path*",
+      "destination": "/#shop",
+      "permanent": false
+    },
+    {
+      "source": "/api/_lib/:path*",
+      "destination": "/",
+      "permanent": false
+    }
   ],
   "rewrites": [
-    { "source": "/poslugy", "destination": "/poslugy.html" },
-    { "source": "/dyakuyu", "destination": "/dyakuyu.html" },
-    { "source": "/oferta", "destination": "/oferta.html" },
-    { "source": "/privacy", "destination": "/privacy.html" },
-    { "source": "/povernennya", "destination": "/povernennya.html" },
-    { "source": "/:slug(zrazok-[a-z0-9-]+)", "destination": "/:slug.html" }
+    {
+      "source": "/poslugy",
+      "destination": "/poslugy.html"
+    },
+    {
+      "source": "/dyakuyu",
+      "destination": "/dyakuyu.html"
+    },
+    {
+      "source": "/oferta",
+      "destination": "/oferta.html"
+    },
+    {
+      "source": "/privacy",
+      "destination": "/privacy.html"
+    },
+    {
+      "source": "/povernennya",
+      "destination": "/povernennya.html"
+    },
+    {
+      "source": "/:slug(zrazok-[a-z0-9-]+)",
+      "destination": "/:slug.html"
+    }
   ],
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
-        { "key": "Permissions-Policy", "value": "geolocation=(), microphone=(), camera=(), payment=()" },
-        { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload" },
-        { "key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://r.jina.ai; frame-ancestors 'self'; base-uri 'self'; object-src 'none'; form-action 'self' https://www.liqpay.ua" }
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "geolocation=(), microphone=(), camera=(), payment=()"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=63072000; includeSubDomains; preload"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://r.jina.ai; frame-ancestors 'self'; base-uri 'self'; object-src 'none'; form-action 'self' https://www.liqpay.ua"
+        }
       ]
     },
     {
       "source": "/assets/(.*)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=604800" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=604800"
+        }
       ]
+    }
+  ],
+  "crons": [
+    {
+      "path": "/api/cpi-check",
+      "schedule": "0 9 12,16 * *"
     }
   ]
 }
