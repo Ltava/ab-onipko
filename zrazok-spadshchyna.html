@@ -594,6 +594,20 @@
     .hp-field { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
     .form-warn { font-size: 12px; color: var(--text-muted); margin-top: 6px; line-height: 1.5; }
     button.burger { background: none; border: 0; padding: 0; cursor: pointer; }
+  
+    /* Меню «бургер» на середніх екранах: пункти меню не вміщуються в один рядок до ~1240px */
+    @media (max-width: 1240px) {
+      .nav-links { display: none; }
+      .burger { display: flex; }
+      .mobile-menu {
+        position: fixed; top: 68px; left: 0; right: 0; bottom: 0; z-index: 99;
+        background: var(--green-dark); padding: 32px 5%;
+        display: flex; flex-direction: column; gap: 20px;
+        transform: translateX(100%); transition: transform 0.3s; overflow-y: auto;
+      }
+      .mobile-menu.open { transform: translateX(0); }
+      .mobile-menu a { color: white; font-size: 18px; font-family: 'Cormorant Garamond', serif; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 16px; }
+    }
   </style>
   <style>
     .landing-hero { padding: 140px 5% 60px; background: var(--cream); }
@@ -623,6 +637,7 @@
     <a href="index.html#military">Військовим</a>
     <a href="index.html#faq">FAQ</a>
     <a href="index.html#news">Новини</a>
+    <a href="instrumenty.html">Інструменти</a>
     <a href="poslugy.html">Практики</a>
     <a href="index.html#contact" class="nav-cta" onclick="openConsultModal(); return false;">Консультація</a>
   </div>
@@ -637,6 +652,7 @@
   <a href="index.html#military" onclick="toggleMenu()">Військовим</a>
   <a href="index.html#faq" onclick="toggleMenu()">FAQ</a>
   <a href="index.html#news" onclick="toggleMenu()">Новини</a>
+  <a href="instrumenty.html" onclick="toggleMenu()">Інструменти</a>
   <a href="poslugy.html" onclick="toggleMenu()">Практики</a>
   <a href="#" onclick="toggleMenu(); openConsultModal(); return false;">Консультація</a>
 </div>
@@ -681,7 +697,8 @@
 <h2>Шлях перший: фактичне прийняття спадщини</h2>
 <p>Якщо спадкоємець фактично прийняв спадщину — постійно проживав разом зі спадкодавцем на момент відкриття спадщини, або самостійно почав управляти чи користуватися спадковим майном, — вважається, що він прийняв спадщину, навіть без звернення до нотаріуса у шестимісячний строк (ст. 1268 ЦК України). У такому разі позов подається про визнання права власності в порядку спадкування, а не про відновлення строку.</p>
 <h2>Шлях другий: відновлення пропущеного строку</h2>
-<p>Якщо спадкоємець не проживав зі спадкодавцем і не вчиняв дій з фактичного прийняття спадщини, єдиний шлях — звернення до суду з позовом про визначення додаткового строку для подання заяви про прийняття спадщини за наявності поважних причин пропуску (ст. 1272 ЦК України).</p>
+<p>Якщо спадкоємець не проживав зі спадкодавцем і не вчиняв дій з фактичного прийняття спадщини, є два шляхи: подати заяву нотаріусу за письмовою згодою спадкоємців, які прийняли спадщину (ч. 2 ст. 1272 ЦК України), або — якщо такої згоди немає — звернутися до суду з позовом про визначення додаткового строку для подання заяви про прийняття спадщини за наявності поважних причин пропуску (ч. 3 ст. 1272 ЦК України).</p>
+<p class="tool-tip" style="background:#fff;border:1px solid #EDE7DF;border-left:3px solid #C4633F;border-radius:6px;padding:12px 16px;font-size:14px;">🗓 Не впевнені, чи строк уже сплив? <a href="strok-pryiniattia-spadshchyny.html" style="color:#C4633F;font-weight:600">Калькулятор строку прийняття спадщини</a> враховує правило воєнного стану про відлік від дати реєстрації смерті.</p>
 <h2>Чому важливо визначити правильний шлях одразу</h2>
 <p>Це дві різні за предметом і доказовою базою категорії позовів. Помилка у виборі підстави — одна з найчастіших причин відмови в задоволенні спадкового позову. Шаблон нижче підходить для типових випадків фактичного прийняття спадщини. Якщо є сумніви, який шлях підходить саме вам, або є спір з іншими спадкоємцями, — краще замовити документ, складений адвокатом особисто після аналізу ваших документів.</p>
 </div>
